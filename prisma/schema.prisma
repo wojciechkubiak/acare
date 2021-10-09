@@ -1,0 +1,44 @@
+// schema.prisma
+datasource db {
+  provider = "postgresql"
+  url = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model BowlQuantity {
+  id Int @default(autoincrement()) @id
+  quantity Int?
+  unit String?
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @updatedAt @map(name: "updated_at")
+  quantityId String?
+  bowl Bowl? @relation(fields: [quantityId], references: [bowlId])
+  @@map(name: "quantities")
+}
+
+model Bowl {
+  id Int @default(autoincrement()) @id
+  bowlUserId String?
+  bowlId String? @unique
+  bowlName String?
+  quantities BowlQuantity[]
+  ownerUser User? @relation(fields: [bowlUserId], references: [userId])
+  @@map(name: "bowls")
+}
+
+model User {
+  id Int @default(autoincrement()) @id
+  firstName String?
+  lastName String?
+  password String?
+  email String? @unique
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @updatedAt @map(name: "updated_at")
+  bowls Bowl[]
+  userId String? @unique
+  @@map(name: "users")
+}
+
