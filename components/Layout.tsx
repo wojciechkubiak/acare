@@ -1,4 +1,4 @@
-import React, { ReactNode, useContext } from "react";
+import React, { ReactNode, useContext, useEffect } from "react";
 import LoadingContext from "../context/LoadingContext";
 import Loading from "./Loading";
 
@@ -9,11 +9,19 @@ type Props = {
 const Layout: React.FC<Props> = (props) => {
   const loadingCtx = useContext(LoadingContext);
 
+  useEffect(() => {
+    setTimeout(() => {
+      loadingCtx.setIsLoading(false);
+    }, 5000);
+  }, []);
+
   return (
     <div>
-      {/* <Header /> */}
-      <div className="layout">{props.children}</div>
-      {loadingCtx.isLoading && <Loading />}
+      {!loadingCtx.isContentVisible ? (
+        <Loading />
+      ) : (
+        <div className="layout">{props.children}</div>
+      )}
       <style jsx global>{`
         html {
           box-sizing: border-box;

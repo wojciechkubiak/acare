@@ -9,6 +9,9 @@ const App = ({ Component, pageProps }: AppProps) => {
   const loadingCtx = useContext(LoadingContext);
 
   const [isLoading, setIsLoading] = useState(loadingCtx.isLoading);
+  const [isContentVisible, setisContentVisible] = useState(
+    loadingCtx.isContentVisible
+  );
 
   const loadingHandler = (data: boolean): void => {
     setIsLoading(data);
@@ -23,6 +26,8 @@ const App = ({ Component, pageProps }: AppProps) => {
         value={{
           isLoading: isLoading,
           setIsLoading: loadingHandler,
+          isContentVisible: isContentVisible,
+          setIsContentVisible: setisContentVisible,
         }}
       >
         <Component {...pageProps} />;

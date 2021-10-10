@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Lottie from "react-lottie";
 import Loader from "react-loader-spinner";
-import animationData from "../assets/splash.json";
 import styled from "styled-components";
+import { MdArrowForward } from "react-icons/md";
+import LoadingContext from "../context/LoadingContext";
+import animationData from "../assets/splash.json";
 
 const FullscreenContainer = styled.div`
   width: 100vw;
@@ -36,7 +38,21 @@ const LoaderContainer = styled.div`
   text-align: center;
 `;
 
+const Button = styled.div`
+  position: relative;
+  width: 100px;
+  height: 100px;
+  border: none;
+  background-color: #50e3c2;
+  border-radius: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 20px;
+  cursor: pointer;
+`;
+
 const Loading: React.FC = () => {
+  const loadingCtx = useContext(LoadingContext);
   const [isStopped, setIsStopped] = useState<boolean>(false);
   const [isPaused, setIsPaused] = useState<boolean>(false);
 
@@ -60,7 +76,13 @@ const Loading: React.FC = () => {
           isPaused={isPaused}
         />
         <LoaderContainer>
-          <Loader type="TailSpin" color="#50e3c2" height={100} width={100} />
+          {loadingCtx.isLoading ? (
+            <Loader type="TailSpin" color="#50e3c2" height={100} width={100} />
+          ) : (
+            <Button onClick={() => loadingCtx.setIsContentVisible(true)}>
+              <MdArrowForward color="white" size={60} />
+            </Button>
+          )}
         </LoaderContainer>
       </LottieContainer>
     </FullscreenContainer>
