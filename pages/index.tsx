@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import Layout from "../components/Layout";
-import { useSession, getSession } from "next-auth/client";
+import LoadingContext from "../context/LoadingContext";
+import { useSession } from "next-auth/client";
 
 type Props = {};
 
 const Blog: React.FC<Props> = (props) => {
+  const loadingCtx = useContext(LoadingContext);
   const [session] = useSession();
 
   if (!session) {
@@ -12,6 +14,7 @@ const Blog: React.FC<Props> = (props) => {
       <Layout>
         <h1>My Drafts</h1>
         <div>You need to be authenticated to view this page.</div>
+        <button onClick={() => loadingCtx.setIsLoading(true)}>Click</button>
       </Layout>
     );
   }
