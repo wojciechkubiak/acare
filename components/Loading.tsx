@@ -16,8 +16,8 @@ const FullscreenContainer = styled.div`
 `;
 
 const LottieContainer = styled.div`
-  width: 600px;
-  height: 700px;
+  width: 500px;
+  height: 620px;
   padding: 0px 20px 40px 20px;
   display: flex;
   flex-direction: column;
@@ -28,7 +28,7 @@ const LottieContainer = styled.div`
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  border-radius: 24px;
+  border-radius: 18px;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
     rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
 `;
@@ -40,15 +40,21 @@ const LoaderContainer = styled.div`
 
 const Button = styled.div`
   position: relative;
-  width: 100px;
-  height: 100px;
+  width: 70px;
+  height: 70px;
   border: none;
-  background-color: #50e3c2;
-  border-radius: 18px;
+  background-color: #D4AFB9;
+  border-radius: 12px;
   left: 50%;
   transform: translateX(-50%);
   padding: 20px;
   cursor: pointer;
+`;
+
+const Header = styled.h1`
+  font-family: "Merienda", cursive;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.67);
 `;
 
 const Loading: React.FC = () => {
@@ -68,19 +74,23 @@ const Loading: React.FC = () => {
   return (
     <FullscreenContainer>
       <LottieContainer>
-        <Lottie
-          options={defaultOptions}
-          height={400}
-          width={400}
-          isStopped={isStopped}
-          isPaused={isPaused}
-        />
+        <div style={{ textAlign: "center" }}>
+          <Lottie
+            options={defaultOptions}
+            height={400}
+            width={400}
+            isStopped={isStopped}
+            isPaused={isPaused}
+          />
+          <Header>Acare</Header>
+        </div>
+
         <LoaderContainer>
           {loadingCtx.isLoading ? (
-            <Loader type="TailSpin" color="#50e3c2" height={100} width={100} />
+            <Loader type="TailSpin" color="#D4AFB9" height={70} width={70} />
           ) : (
             <Button onClick={() => loadingCtx.setIsContentVisible(true)}>
-              <MdArrowForward color="white" size={60} />
+              <MdArrowForward color="white" size={30} />
             </Button>
           )}
         </LoaderContainer>
