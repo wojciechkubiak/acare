@@ -19,7 +19,6 @@ const register = async (registerData: RegisterData) => {
               return false;
             }
           }
-
           return false;
         });
       }

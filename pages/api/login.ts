@@ -41,9 +41,6 @@ const loginUser = async (req: any, res: any) => {
               const refreshToken = jsonwebtoken.sign(
                 result,
                 process.env.SECRET_KEY,
-                {
-                  expiresIn: "12h",
-                }
               );
               const authToken = jsonwebtoken.sign(
                 result,

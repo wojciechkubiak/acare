@@ -2,6 +2,7 @@ import React from "react";
 import Layout from "../components/Layout";
 import Router from "next/router";
 import { LoginData, Tokens } from "./api/login";
+import { session } from "next-auth/client";
 
 const login = async (loginData: LoginData) => {
   try {
@@ -17,7 +18,7 @@ const login = async (loginData: LoginData) => {
             .then((data: Tokens) => {
               if (data) {
                 if (data.authToken) {
-                  localStorage.setItem("authToken", data.authToken);
+                  sessionStorage.setItem("authToken", data.authToken);
                 }
 
                 if (data.refreshToken) {

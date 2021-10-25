@@ -18,7 +18,7 @@ const registerUser = async (req: any, res: any) => {
   const userId = uuidv4();
   const _result: RegisterSuccess = { isCreated: false };
 
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     if (firstName && lastName && email && password) {
       bcrypt.hash(password, 10, async (error, hash) => {
         if (error) {
@@ -44,13 +44,13 @@ const registerUser = async (req: any, res: any) => {
           })
           .catch((error) => {
             console.log(error);
-            res.status(500).send(_result).end();
+            res.status(500).send(_result)?.end();
             return resolve(_result);
           });
       });
     } else {
-      res.status(405).send(_result).end();
-      return resolve(_result);
+      res.status(405).send(_result)?.end();
+      return reject(_result);
     }
   });
 };
