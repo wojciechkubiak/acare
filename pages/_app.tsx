@@ -1,20 +1,15 @@
 import { useState, useContext } from "react";
 import { AppProps } from "next/app";
 import Head from "next/head";
-import LoadingContext from "../context/LoadingContext";
-
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import Routing from "../components/Routing";
+import LoginContext, { Step } from "../context/LoginContext";
 
-const App = ({ Component, pageProps }: AppProps) => {
-  const loadingCtx = useContext(LoadingContext);
+const App = ({ Component, pageProps, router }: AppProps) => {
+  const [loginStep, setLoginStep] = useState<Step>(Step.LOADING);
 
-  const [isLoading, setIsLoading] = useState(loadingCtx.isLoading);
-  const [isContentVisible, setIsContentVisible] = useState(
-    loadingCtx.isContentVisible
-  );
-
-  const loadingHandler = (data: boolean): void => {
-    setIsLoading(data);
+  const handleLoginStep = (step: Step) => {
+    setLoginStep(step);
   };
 
   return (
@@ -22,16 +17,16 @@ const App = ({ Component, pageProps }: AppProps) => {
       <Head>
         <title>Acare</title>
       </Head>
-      <LoadingContext.Provider
+      <LoginContext.Provider
         value={{
-          isLoading: isLoading,
-          setIsLoading: loadingHandler,
-          isContentVisible: isContentVisible,
-          setIsContentVisible: setIsContentVisible,
+          step: loginStep,
+          setStep: handleLoginStep,
         }}
       >
-        <Component {...pageProps} />
-      </LoadingContext.Provider>
+        <Routing router={router}>
+          <Component {...pageProps} router={router} />
+        </Routing>
+      </LoginContext.Provider>
     </>
   );
 };

@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import Layout from "../components/Layout";
 import Router from "next/router";
 import { LoginData, Tokens } from "./api/login";
-import { session } from "next-auth/client";
+import LoginContext, { Step } from "../context/LoginContext";
+import Loading from "../components/Loading";
+import FormContainer from "../components/FormContainer";
+import AppNameHeader from "../components/AppNameHeader";
 
 const login = async (loginData: LoginData) => {
   try {
@@ -25,7 +28,7 @@ const login = async (loginData: LoginData) => {
                   document.cookie = `refreshToken=${data.refreshToken}`;
                 }
 
-                Router.push("/");
+                // Router.push("/");
               }
             })
             .catch((error) => console.log(error));
@@ -38,6 +41,8 @@ const login = async (loginData: LoginData) => {
 };
 
 const Login: React.FC = () => {
+  const loginCtx = useContext(LoginContext);
+
   const loginData: LoginData = {
     email: "mail@test.com",
     password: "1234",
@@ -45,7 +50,17 @@ const Login: React.FC = () => {
 
   return (
     <Layout>
-      <button onClick={() => login(loginData)}>Login</button>
+      <FormContainer>
+        <>
+          {loginCtx.step === Step.LOADING && <Loading />}
+          {loginCtx.step === Step.LOGIN && (
+            <>
+              <AppNameHeader />
+              <button onClick={() => login(loginData)}>tete</button>
+            </>
+          )}
+        </>
+      </FormContainer>
     </Layout>
   );
 };

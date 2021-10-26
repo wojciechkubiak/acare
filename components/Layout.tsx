@@ -1,7 +1,6 @@
-import React, { ReactNode, useContext, useEffect } from "react";
-import LoadingContext from "../context/LoadingContext";
-import Loading from "./Loading";
+import React, { ReactNode } from "react";
 import styled from "styled-components";
+import Opacity from "./Opacity";
 
 const LayoutContainer = styled.div`
   width: 100vw;
@@ -16,24 +15,12 @@ type Props = {
   children: ReactNode;
 };
 
-const Layout: React.FC<Props> = (props) => {
-  const loadingCtx = useContext(LoadingContext);
-
-  useEffect(() => {
-    setTimeout(() => {
-      loadingCtx.setIsLoading(false);
-    }, 5000);
-  }, []);
-
-  return (
-    <div>
-      {!loadingCtx.isContentVisible ? (
-        <Loading />
-      ) : (
-        <LayoutContainer>{props.children}</LayoutContainer>
-      )}
-    </div>
-  );
-};
+const Layout: React.FC<Props> = (props) => (
+  <div>
+    <Opacity>
+      <LayoutContainer>{props.children}</LayoutContainer>
+    </Opacity>
+  </div>
+);
 
 export default Layout;
