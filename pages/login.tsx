@@ -13,7 +13,6 @@ import TextButton from "../components/TextButton";
 import ErrorText from "../components/ErrorText";
 
 const ButtonsContainer = styled.div`
-  margin-top: 22px;
   display: flex;
   flex-direction: column;
   width: 90%;
@@ -104,6 +103,7 @@ const Login: React.FC = () => {
               >
                 <Input
                   label="Email"
+                  placeholder="your email"
                   type="email"
                   value={loginData["email"]}
                   onChange={handleEmail}
@@ -111,6 +111,7 @@ const Login: React.FC = () => {
                 />
                 <Input
                   label="Password"
+                  placeholder="your password"
                   type="password"
                   value={loginData["password"]}
                   onChange={handlePassword}

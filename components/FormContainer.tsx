@@ -15,9 +15,8 @@ const FormContainerBody = styled.div`
   top: 50%;
   transform: translate(-50%, -50%);
   border-radius: 18px;
-  box-shadow: rgba(0, 0, 0, 0.15) 0 54px 55px,
-    rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.05) 0px 4px 6px,
-    rgba(0, 0, 0, 0.07) 0px 12px 13px, rgba(0, 0, 0, 0.05) 0px -3px 5px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
+    rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
   transition: 1000ms all;
 `;
 

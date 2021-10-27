@@ -26,6 +26,7 @@
     "jsonwebtoken": "^8.5.1",
     "next": "9.5.5",
     "next-auth": "^3.29.0",
+    "next-images": "^1.8.1",
     "react": "16.14.0",
     "react-dom": "16.14.0",
     "react-icons": "^4.3.1",
