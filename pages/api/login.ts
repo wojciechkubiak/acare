@@ -1,4 +1,3 @@
-import { v4 as uuidv4 } from "uuid";
 import bcrypt from "bcrypt";
 import jsonwebtoken from "jsonwebtoken";
 import prisma from "../../lib/prisma";
@@ -40,7 +39,7 @@ const loginUser = async (req: any, res: any) => {
               console.log("hashed");
               const refreshToken = jsonwebtoken.sign(
                 result,
-                process.env.SECRET_KEY,
+                process.env.SECRET_KEY
               );
               const authToken = jsonwebtoken.sign(
                 result,
@@ -58,20 +57,20 @@ const loginUser = async (req: any, res: any) => {
               return resolve(_result);
             }
           } else {
-            res.status(405).send().end();
+            res.status(405).send()?.end();
             return resolve(_result);
           }
         })
         .catch((error) => {
           console.log(error);
-          res.status(500).send(_result).end();
+          res.status(500).send(_result)?.end();
           return resolve(_result);
         });
     } else {
-      res.status(405).send(_result).end();
+      res.status(405).send(_result)?.end();
       return resolve(false);
     }
-  });
+  }).catch((error) => console.log(error));
 };
 
 export default loginUser;

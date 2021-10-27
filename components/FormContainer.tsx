@@ -1,10 +1,9 @@
-import React, { ReactNode, useEffect, useState } from "react";
-import styled, { ThemeProvider } from "styled-components";
+import React, { ReactNode } from "react";
+import styled from "styled-components";
 
 const FormContainerBody = styled.div`
   min-width: 500px;
   width: 25%;
-  min-height: 620px;
   padding: 0 20px 40px 20px;
   display: flex;
   flex-direction: column;

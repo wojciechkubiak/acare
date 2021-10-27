@@ -1,4 +1,4 @@
-import React, { useState, useContext, useCallback, useEffect } from "react";
+import React, { useState } from "react";
 import Lottie from "react-lottie";
 import Loader from "react-loader-spinner";
 import styled from "styled-components";
@@ -8,20 +8,6 @@ import AppNameHeader from "./AppNameHeader";
 const LoaderContainer = styled.div`
   width: 100%;
   text-align: center;
-`;
-
-const Button = styled.div`
-  position: relative;
-  width: 30px;
-  height: 30px;
-  border: none;
-  background-color: #d396a7;
-  border-radius: 12px;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 20px;
-  cursor: pointer;
-  transition: 1000ms all;
 `;
 
 const Loading = () => {

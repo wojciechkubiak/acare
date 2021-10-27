@@ -6,8 +6,16 @@ const Header = styled.h1`
   font-weight: 400;
   color: rgba(0, 0, 0, 0.67);
   text-align: center;
+  margin-top: 32px;
 `;
 
-const AppNameHeader = () => <Header>Acare</Header>;
+interface IAppNameHeader {
+  text?: string;
+  margin?: number;
+}
+
+const AppNameHeader = (props: IAppNameHeader) => (
+  <Header>{props.text ?? "Acare"}</Header>
+);
 
 export default AppNameHeader;
