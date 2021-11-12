@@ -19,6 +19,16 @@ const ButtonsContainer = styled.div`
   position: relative;
   left: 50%;
   transform: translateX(-50%);
+
+  & > button {
+    margin-top: 12px;
+    margin-bottom: 12px;
+  }
+`;
+
+const Form = styled.form`
+  margin-top: 60px;
+  margin-bottom: 32px;
 `;
 
 const Login: React.FC = () => {
@@ -46,6 +56,7 @@ const Login: React.FC = () => {
   };
 
   const login = async (loginData: LoginData) => {
+    console.log(loginData);
     try {
       await fetch("http://localhost:3000/api/login", {
         method: "POST",
@@ -95,7 +106,7 @@ const Login: React.FC = () => {
           {loginCtx.step === Step.LOGIN && (
             <>
               <AppNameHeader text="Log In" margin={180} />
-              <form
+              <Form
                 onSubmit={(event) => {
                   event.preventDefault();
                   login(loginData);
@@ -125,7 +136,7 @@ const Login: React.FC = () => {
                     onClick={() => Router.push("/register")}
                   />
                 </ButtonsContainer>
-              </form>
+              </Form>
             </>
           )}
         </>

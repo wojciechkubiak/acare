@@ -3,9 +3,9 @@ import styled from "styled-components";
 
 const TextBtn = styled.p`
   text-align: center;
-  font-size: 16px;
+  font-size: 18px;
   cursor: pointer;
-  color: rgba(0, 0, 0, 0.67);
+  color: rgba(0, 0, 0, 0.54);
   font-family: Ubuntu, sans-serif;
   transition: 500ms;
 

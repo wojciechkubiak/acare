@@ -9,7 +9,7 @@ const Btn = styled.button`
   position: relative;
   left: 50%;
   transform: translateX(-50%);
-  width: 300px;
+  width: 60%;
   box-shadow: none;
   border: none;
   border-radius: 8px;

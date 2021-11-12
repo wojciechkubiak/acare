@@ -33,11 +33,11 @@ const InputField = styled.input`
   left: 50%;
   transform: translateX(-50%);
   width: calc(80%);
-  border: 2px solid rgba(0, 0, 0, 0.67);
+  border: 2px solid #e1e1e1;
   box-shadow: none;
   position: relative;
   text-align: center;
-  color: rgba(0, 0, 0, 0.87);
+  color: rgba(0, 0, 0, 0.67);
   font-size: 20px;
   transition: 1000ms;
 
@@ -47,7 +47,7 @@ const InputField = styled.input`
   }
 
   &::placeholder {
-    color: rgba(0, 0, 0, 0.5);
+    color: rgba(0, 0, 0, 0.4);
   }
 
   &:active {
