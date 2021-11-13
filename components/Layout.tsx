@@ -9,13 +9,6 @@ const LayoutContainer = styled.div`
   position: fixed;
   left: 0;
   top: 0;
-  background: rgb(156, 173, 206);
-  background: linear-gradient(
-    90deg,
-    rgba(156, 173, 206, 1) 0%,
-    rgba(209, 207, 226, 1) 35%,
-    rgba(212, 175, 185, 1) 100%
-  );
 `;
 
 type Props = {

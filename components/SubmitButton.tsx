@@ -5,20 +5,18 @@ const Btn = styled.button`
   padding: 20px;
   cursor: pointer;
   transition: 500ms all;
-  background-color: #d396a7;
-  position: relative;
-  left: 50%;
-  transform: translateX(-50%);
+  background-color: transparent;
   width: 60%;
   box-shadow: none;
-  border: none;
+  border: 4px solid #ebb8c6;
   border-radius: 8px;
   font-family: Ubuntu, sans-serif;
   font-size: 22px;
   color: white;
+  color: rgba(0, 0, 0, 0.6);
 
   &:hover {
-    background-color: #d37992;
+    border: 4px solid #d37992;
   }
 `;
 

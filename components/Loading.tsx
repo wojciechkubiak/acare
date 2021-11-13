@@ -5,10 +5,16 @@ import styled from "styled-components";
 import animationData from "../assets/splash.json";
 import AppNameHeader from "./AppNameHeader";
 
-const LoaderContainer = styled.div`
-  width: 100%;
+const LoaderBody = styled.div`
+  width: 100vw;
+  height: 100vh;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
+
 
 const Loading = () => {
   const [isStopped, setIsStopped] = useState<boolean>(false);
@@ -25,19 +31,19 @@ const Loading = () => {
 
   return (
     <>
-      <div style={{ textAlign: "center" }}>
+      <LoaderBody>
         <Lottie
+          isClickToPauseDisabled={true}
           options={defaultOptions}
-          height={400}
-          width={400}
-          isStopped={isStopped}
-          isPaused={isPaused}
+          height={500}
+          width={500}
+          isStopped={false}
+          isPaused={false}
         />
-      </div>
-      <AppNameHeader />
-      <LoaderContainer>
+        <AppNameHeader text="Animalcare" />
         <Loader type="TailSpin" color="#D4AFB9" height={70} width={70} />
-      </LoaderContainer>
+      </LoaderBody>
+
     </>
   );
 };

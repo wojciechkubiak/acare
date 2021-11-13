@@ -13,3 +13,10 @@ init: https://vercel.com/guides/nextjs-prisma-postgres
 Scheme update:
 1. npx prisma db push
 2. npx prisma generate
+
+
+#BF4980
+#F2CD5C
+#F2BC57
+#D9863D
+#8C2A2A

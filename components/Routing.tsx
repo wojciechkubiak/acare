@@ -3,7 +3,9 @@ import { Router } from "next/router";
 import AuthContext from "../context/AuthContext";
 import Layout from "./Layout";
 import { Token } from "../pages/api/auth";
-import LoginContext, { Step } from "../context/LoginContext";
+import Loading from "./Loading";
+import { AuthRoutes, Routes } from "../utils/Routes";
+import { route } from "next/dist/next-server/server/router";
 
 interface IRouting {
   router: Router;
@@ -11,7 +13,6 @@ interface IRouting {
 }
 
 const Routing = ({ router, children }: IRouting) => {
-  const loginCtx = useContext(LoginContext);
   const authCtx = useContext(AuthContext);
   const [isAuth, setIsAuth] = useState(authCtx.isAuth);
   const [authToken, setAuthToken] = useState(authCtx.authToken);
@@ -25,58 +26,56 @@ const Routing = ({ router, children }: IRouting) => {
     [isLoading]
   );
 
-  const handleRouting = useCallback(() => {
-    if (!isAuth && router.route !== "/register" && router.route !== "/login") {
-      // TODO: route "/" returns "/login" at the start
-      router?.push("/login");
-    } else {
-      router?.push(router.route);
-    }
-  }, [router, handleLoading]);
-
   const handleAuth = useCallback(async () => {
     const refresh = document.cookie.replace("refreshToken=", "");
 
-    if (refresh.length) {
-      try {
-        const result = await fetch("http://localhost:3000/api/auth", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ refresh: refresh }),
-        });
-        if (result.status === 200) {
-          result.json().then((data: Token) => {
-            if (data) {
-              sessionStorage.setItem("authToken", data.authToken);
-              setIsAuth(true);
-              router?.push("/");
-            }
+    if (Routes.includes(router.route)) {
+      if (refresh?.length) {
+        try {
+          const result = await fetch("http://localhost:3000/api/auth", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ refresh: refresh }),
           });
-        } else {
-          setIsLoading(false);
-          loginCtx.setStep(Step.LOGIN);
+          if (result.status === 200) {
+            result.json().then((data: Token) => {
+              if (data) {
+                sessionStorage.setItem("authToken", data.authToken);
+                setIsAuth(true);
+                router?.push("/");
+              }
+            });
+          } else {
+            setIsLoading(false);
+          }
+        } catch (error) {
+          console.log(error);
         }
-      } catch (error) {
-        console.log(error);
-        loginCtx.setStep(Step.LOGIN);
+      } else {
+        setIsLoading(false);
+        if (router.route === AuthRoutes.register) {
+          router?.push("/register");
+        } else {
+          router?.push("/login");
+        }
       }
     } else {
-      loginCtx.setStep(Step.LOGIN);
+      setIsLoading(false);
+      router?.push("/404");
     }
   }, []);
 
   useEffect(() => {
     if (!isAuth) {
       setIsLoading(true);
-      setTimeout(() => {
-        handleAuth().then((r) => console.log(r));
-      }, 3000);
+      if (Routes.includes(router.route)) {
+        setTimeout(() => handleAuth(), 3000);
+      } else {
+        setIsLoading(false);
+        router?.push("/404");
+      }
     }
   }, [handleAuth]);
-
-  useEffect(() => {
-    handleRouting();
-  }, [handleRouting]);
 
   const setTokens = (
     authToken: string,
@@ -90,6 +89,14 @@ const Routing = ({ router, children }: IRouting) => {
     setIsLoading(isLoading);
   };
 
+  const handleBody = () => {
+    if (isLoading) {
+      return <Loading />;
+    }
+
+    return children;
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -100,7 +107,7 @@ const Routing = ({ router, children }: IRouting) => {
         setTokens,
       }}
     >
-      <Layout>{children}</Layout>
+      <Layout>{handleBody()}</Layout>
     </AuthContext.Provider>
   );
 };

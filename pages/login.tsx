@@ -2,7 +2,6 @@ import React, { useContext, useState } from "react";
 import Layout from "../components/Layout";
 import Router from "next/router";
 import { LoginData, Tokens } from "./api/login";
-import LoginContext, { Step } from "../context/LoginContext";
 import Loading from "../components/Loading";
 import FormContainer from "../components/FormContainer";
 import AppNameHeader from "../components/AppNameHeader";
@@ -11,6 +10,7 @@ import styled from "styled-components";
 import SubmitButton from "../components/SubmitButton";
 import TextButton from "../components/TextButton";
 import ErrorText from "../components/ErrorText";
+import Loader from "react-loader-spinner";
 
 const ButtonsContainer = styled.div`
   display: flex;
@@ -19,6 +19,9 @@ const ButtonsContainer = styled.div`
   position: relative;
   left: 50%;
   transform: translateX(-50%);
+  min-height: 200px;
+  justify-content: space-around;
+  align-items: center;
 
   & > button {
     margin-top: 12px;
@@ -32,31 +35,23 @@ const Form = styled.form`
 `;
 
 const Login: React.FC = () => {
-  const loginCtx = useContext(LoginContext);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [loginData, setLoginData] = useState<LoginData>({
     email: "",
     password: "",
   });
   const [error, setError] = useState<string>("");
 
-  const handleEmail = (value: string) => {
+  const handleInput = (value: string, name: string) => {
     if (error?.length) setError("");
     setLoginData((prevState: LoginData) => ({
       ...prevState,
-      email: value,
-    }));
-  };
-
-  const handlePassword = (value: string) => {
-    if (error?.length) setError("");
-    setLoginData((prevState: LoginData) => ({
-      ...prevState,
-      password: value,
+      [name]: value,
     }));
   };
 
   const login = async (loginData: LoginData) => {
-    console.log(loginData);
+    setIsLoading(true);
     try {
       await fetch("http://localhost:3000/api/login", {
         method: "POST",
@@ -81,67 +76,72 @@ const Login: React.FC = () => {
                 }
               })
               .catch((error) => {
+                setIsLoading(false);
                 console.log(error);
                 setError("Something went wrong");
               });
+
+            setIsLoading(false);
           } else {
             setError("Wrong credentials");
+            setIsLoading(false);
           }
         })
         .catch((error) => {
           console.log(error);
           setError("Something went wrong");
+          setIsLoading(false);
         });
     } catch (error) {
       console.log(error);
       setError("Something went wrong");
+      setIsLoading(false);
     }
   };
 
   return (
-    <Layout>
-      <FormContainer>
-        <>
-          {loginCtx.step === Step.LOADING && <Loading />}
-          {loginCtx.step === Step.LOGIN && (
+    <FormContainer>
+      <AppNameHeader text="Log In" margin={180} />
+      <Form
+        onSubmit={(event) => {
+          event.preventDefault();
+          login(loginData);
+        }}
+      >
+        <Input
+          label="Email"
+          placeholder="your email"
+          type="email"
+          name="email"
+          value={loginData.email}
+          onChange={handleInput}
+          isRequired={true}
+        />
+        <Input
+          label="Password"
+          placeholder="your password"
+          type="password"
+          name="password"
+          value={loginData.password}
+          onChange={handleInput}
+          isRequired={true}
+        />
+        <ErrorText text={error} />
+        <ButtonsContainer>
+          {!isLoading ? (
             <>
-              <AppNameHeader text="Log In" margin={180} />
-              <Form
-                onSubmit={(event) => {
-                  event.preventDefault();
-                  login(loginData);
-                }}
-              >
-                <Input
-                  label="Email"
-                  placeholder="your email"
-                  type="email"
-                  value={loginData["email"]}
-                  onChange={handleEmail}
-                  isRequired={true}
-                />
-                <Input
-                  label="Password"
-                  placeholder="your password"
-                  type="password"
-                  value={loginData["password"]}
-                  onChange={handlePassword}
-                  isRequired={true}
-                />
-                <ErrorText text={error} />
-                <ButtonsContainer>
-                  <SubmitButton text="Submit" isDisabled={false} />
-                  <TextButton
-                    text="Create new account"
-                    onClick={() => Router.push("/register")}
-                  />
-                </ButtonsContainer>
-              </Form>
+              <SubmitButton text="SUBMIT" isDisabled={isLoading} />
+              <TextButton
+                text="Create new account"
+                onClick={() => Router.push("/register")}
+              />{" "}
             </>
+          ) : (
+            <Loader type="TailSpin" color="#D4AFB9" height={70} width={70} />
           )}
-        </>
-      </FormContainer>
-    </Layout>
+        </ButtonsContainer>
+      </Form>
+    </FormContainer>
   );
 };
 

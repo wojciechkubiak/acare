@@ -70,7 +70,8 @@ interface IInput {
   placeholder: string;
   type: string;
   value: string;
-  onChange: (value: string) => void;
+  name: string;
+  onChange: (value: string, name: string) => void;
   isRequired: boolean;
 }
 
@@ -80,8 +81,9 @@ const Input = (props: IInput) => (
     <InputField
       type={props.type}
       value={props.value}
+      name={props.name}
       onChange={(e: React.FormEvent<HTMLInputElement>) =>
-        props.onChange(e.currentTarget.value)
+        props.onChange(e.currentTarget.value, e.currentTarget.name)
       }
       placeholder={props.placeholder}
       required={props.isRequired}

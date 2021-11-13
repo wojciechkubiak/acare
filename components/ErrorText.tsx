@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 const Text = styled.p`
   min-height: 32px;
-  color: #de6f6f;
+  color: #d37992;
   margin: 0 !important;
   text-align: center;
   font-family: Ubuntu, sans-serif;
