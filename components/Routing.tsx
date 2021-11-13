@@ -26,38 +26,50 @@ const Routing = ({ router, children }: IRouting) => {
     [isLoading]
   );
 
+  const handleNotAuth = () => {
+    setIsLoading(false);
+    if (router.route === AuthRoutes.register) {
+      router?.push("/register");
+    } else {
+      router?.push("/login");
+    }
+  };
+
   const handleAuth = useCallback(async () => {
     const refresh = document.cookie.replace("refreshToken=", "");
 
     if (Routes.includes(router.route)) {
       if (refresh?.length) {
         try {
-          const result = await fetch("http://localhost:3000/api/auth", {
+          await fetch("http://localhost:3000/api/auth", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ refresh: refresh }),
-          });
-          if (result.status === 200) {
-            result.json().then((data: Token) => {
-              if (data) {
-                sessionStorage.setItem("authToken", data.authToken);
-                setIsAuth(true);
-                router?.push("/");
+          })
+            .then((res) => {
+              if (res.status === 200) {
+                res.json().then((data: Token) => {
+                  if (data?.authToken) {
+                    sessionStorage.setItem("authToken", data.authToken);
+                    setIsAuth(true);
+                    setIsLoading(false);
+                    router?.push("/");
+                  } else {
+                    handleNotAuth();
+                  }
+                });
+              } else {
+                handleNotAuth();
               }
+            })
+            .catch((error) => {
+              handleNotAuth();
             });
-          } else {
-            setIsLoading(false);
-          }
         } catch (error) {
-          console.log(error);
+          handleNotAuth();
         }
       } else {
-        setIsLoading(false);
-        if (router.route === AuthRoutes.register) {
-          router?.push("/register");
-        } else {
-          router?.push("/login");
-        }
+        handleNotAuth();
       }
     } else {
       setIsLoading(false);
@@ -90,6 +102,7 @@ const Routing = ({ router, children }: IRouting) => {
   };
 
   const handleBody = () => {
+    console.log(isLoading);
     if (isLoading) {
       return <Loading />;
     }

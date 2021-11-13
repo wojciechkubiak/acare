@@ -18,39 +18,51 @@ const registerUser = async (req: any, res: any) => {
   const userId = uuidv4();
   const _result: RegisterSuccess = { isCreated: false };
 
-  return new Promise((resolve, reject) => {
-    if (firstName && lastName && email && password) {
-      bcrypt.hash(password, 10, async (error, hash) => {
-        if (error) {
-          console.log(error);
-          res.status(405).send(_result).end();
-          return resolve(_result);
-        }
+  return new Promise(async (resolve, reject) => {
+    const userExists = await prisma.user
+      .count({
+        where: {
+          email: email,
+        },
+      })
+      .then((cnt) => cnt);
 
-        prisma.user
-          .create({
-            data: {
-              firstName: firstName,
-              lastName: lastName,
-              email: email,
-              password: hash,
-              userId: userId,
-            },
-          })
-          .then((result) => {
-            _result.isCreated = true;
-            res.status(200).send(_result);
+    if (!userExists) {
+      if (firstName && lastName && email && password) {
+        bcrypt.hash(password, 10, async (error, hash) => {
+          if (error) {
+            res.status(405).send(_result)?.end();
             return resolve(_result);
-          })
-          .catch((error) => {
-            console.log(error);
-            res.status(500).send(_result)?.end();
-            return resolve(_result);
-          });
-      });
+          }
+
+          prisma.user
+            .create({
+              data: {
+                firstName: firstName,
+                lastName: lastName,
+                email: email,
+                password: hash,
+                userId: userId,
+              },
+            })
+            .then((result) => {
+              _result.isCreated = true;
+              res.status(200).send(_result);
+              return resolve(_result);
+            })
+            .catch((error) => {
+              console.log(error);
+              res.status(500).send(_result)?.end();
+              return resolve(_result);
+            });
+        });
+      } else {
+        res.status(405).send(_result)?.end();
+        return resolve(_result);
+      }
     } else {
-      res.status(405).send(_result)?.end();
-      return reject(_result);
+      res.status(400).send(_result)?.end();
+      return resolve(_result);
     }
   });
 };

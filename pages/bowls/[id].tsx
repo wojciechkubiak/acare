@@ -21,17 +21,6 @@ type Props = {
 };
 
 const Bowls: React.FC<Props> = (props) => {
-  console.log(props);
-  //   const [session] = useSession();
-
-  //   if (!session) {
-  //     return (
-  //       <Layout>
-  //         <h1>My Drafts</h1>
-  //         <div>You need to be authenticated to view this page.</div>
-  //       </Layout>
-  //     );
-  //   }
   return (
     <Layout>
       <div className="page">

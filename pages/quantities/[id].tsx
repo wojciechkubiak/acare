@@ -6,7 +6,6 @@ import Quantity, { QuantityProps } from "../../components/Quantity";
 import prisma from "../../lib/prisma";
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-  console.log(params?.id);
   const data = await prisma.bowlQuantity.findMany({
     where: {
       quantityId: String(params?.id) || '',
@@ -23,7 +22,6 @@ type Props = {
 };
 
 const Quantities: React.FC<Props> = (props) => {
-  console.log(props);
   return (
     <Layout>
       <div>

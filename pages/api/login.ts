@@ -33,10 +33,10 @@ const loginUser = async (req: any, res: any) => {
           },
         })
         .then((result) => {
+          console.log(result);
+
           if (result) {
-            console.log(result);
             if (bcrypt.compareSync(password, result.password)) {
-              console.log("hashed");
               const refreshToken = jsonwebtoken.sign(
                 result,
                 process.env.SECRET_KEY
@@ -55,6 +55,9 @@ const loginUser = async (req: any, res: any) => {
 
               res.status(200).json(_result);
               return resolve(_result);
+            } else {
+              res.status(404).send()?.end();
+              return resolve(_result);
             }
           } else {
             res.status(405).send()?.end();
@@ -62,7 +65,6 @@ const loginUser = async (req: any, res: any) => {
           }
         })
         .catch((error) => {
-          console.log(error);
           res.status(500).send(_result)?.end();
           return resolve(_result);
         });

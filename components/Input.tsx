@@ -73,6 +73,7 @@ interface IInput {
   name: string;
   onChange: (value: string, name: string) => void;
   isRequired: boolean;
+  disabled: boolean;
 }
 
 const Input = (props: IInput) => (
@@ -87,6 +88,7 @@ const Input = (props: IInput) => (
       }
       placeholder={props.placeholder}
       required={props.isRequired}
+      disabled={props.disabled}
     />
   </InputContainer>
 );

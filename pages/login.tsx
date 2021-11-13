@@ -1,8 +1,6 @@
 import React, { useContext, useState } from "react";
-import Layout from "../components/Layout";
 import Router from "next/router";
 import { LoginData, Tokens } from "./api/login";
-import Loading from "../components/Loading";
 import FormContainer from "../components/FormContainer";
 import AppNameHeader from "../components/AppNameHeader";
 import Input from "../components/Input";
@@ -11,6 +9,7 @@ import SubmitButton from "../components/SubmitButton";
 import TextButton from "../components/TextButton";
 import ErrorText from "../components/ErrorText";
 import Loader from "react-loader-spinner";
+import AuthContext from "../context/AuthContext";
 
 const ButtonsContainer = styled.div`
   display: flex;
@@ -35,6 +34,8 @@ const Form = styled.form`
 `;
 
 const Login: React.FC = () => {
+  const authCtx = useContext(AuthContext);
+
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [loginData, setLoginData] = useState<LoginData>({
     email: "",
@@ -64,15 +65,15 @@ const Login: React.FC = () => {
               .json()
               .then((data: Tokens) => {
                 if (data) {
-                  if (data.authToken) {
-                    sessionStorage.setItem("authToken", data.authToken);
-                  }
+                  if (data?.authToken && data?.refreshToken) {
+                    const authToken = data.authToken;
+                    const refreshToken = data.refreshToken;
 
-                  if (data.refreshToken) {
-                    document.cookie = `refreshToken=${data.refreshToken}`;
+                    sessionStorage.setItem("authToken", authToken);
+                    document.cookie = `refreshToken=${refreshToken}`;
+                    authCtx.setTokens(authToken, refreshToken, true, false);
+                    Router.push("/");
                   }
-
-                  // Router.push("/");
                 }
               })
               .catch((error) => {
@@ -116,6 +117,7 @@ const Login: React.FC = () => {
           value={loginData.email}
           onChange={handleInput}
           isRequired={true}
+          disabled={isLoading}
         />
         <Input
           label="Password"
@@ -125,6 +127,7 @@ const Login: React.FC = () => {
           value={loginData.password}
           onChange={handleInput}
           isRequired={true}
+          disabled={isLoading}
         />
         <ErrorText text={error} />
         <ButtonsContainer>
@@ -134,7 +137,7 @@ const Login: React.FC = () => {
               <TextButton
                 text="Create new account"
                 onClick={() => Router.push("/register")}
-              />{" "}
+              />
             </>
           ) : (
             <Loader type="TailSpin" color="#D4AFB9" height={70} width={70} />
