@@ -51,7 +51,6 @@ const registerUser = async (req: any, res: any) => {
               return resolve(_result);
             })
             .catch((error) => {
-              console.log(error);
               res.status(500).send(_result)?.end();
               return resolve(_result);
             });

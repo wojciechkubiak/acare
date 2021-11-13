@@ -78,7 +78,6 @@ const Login: React.FC = () => {
               })
               .catch((error) => {
                 setIsLoading(false);
-                console.log(error);
                 setError("Something went wrong");
               });
 
@@ -89,12 +88,10 @@ const Login: React.FC = () => {
           }
         })
         .catch((error) => {
-          console.log(error);
           setError("Something went wrong");
           setIsLoading(false);
         });
     } catch (error) {
-      console.log(error);
       setError("Something went wrong");
       setIsLoading(false);
     }

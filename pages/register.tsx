@@ -91,7 +91,6 @@ const Register: React.FC = () => {
       });
     } catch (error) {
       setIsLoading(false);
-      console.log(error);
     }
   };
 

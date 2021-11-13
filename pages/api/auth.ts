@@ -56,7 +56,6 @@ const authUser = async (req: any, res: any) => {
               }
             })
             .catch((error) => {
-              console.log(error);
               res.status(500).send(token)?.end();
               return reject(token);
             });

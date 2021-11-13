@@ -102,7 +102,6 @@ const Routing = ({ router, children }: IRouting) => {
   };
 
   const handleBody = () => {
-    console.log(isLoading);
     if (isLoading) {
       return <Loading />;
     }

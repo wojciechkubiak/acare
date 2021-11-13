@@ -33,8 +33,6 @@ const loginUser = async (req: any, res: any) => {
           },
         })
         .then((result) => {
-          console.log(result);
-
           if (result) {
             if (bcrypt.compareSync(password, result.password)) {
               const refreshToken = jsonwebtoken.sign(
