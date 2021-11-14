@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Lottie from "react-lottie";
 import Loader from "react-loader-spinner";
 import styled from "styled-components";
@@ -17,9 +17,6 @@ const LoaderBody = styled.div`
 
 
 const Loading = () => {
-  const [isStopped, setIsStopped] = useState<boolean>(false);
-  const [isPaused, setIsPaused] = useState<boolean>(false);
-
   const defaultOptions = {
     loop: true,
     autoplay: true,

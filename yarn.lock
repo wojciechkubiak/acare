@@ -4131,7 +4131,7 @@ next-auth@^3.29.0:
     preact-render-to-string "^5.1.14"
     querystring "^0.2.0"
 
-next-images@^1.8.1:
+next-images@^1.8.2:
   version "1.8.2"
   resolved "https://registry.yarnpkg.com/next-images/-/next-images-1.8.2.tgz#5d2da95db70874c14e5b8ec79c0c5cf90c5d4d25"
   integrity sha512-D2UBfrFY4X61zVYLc0Nd0QYqMvk4p9A9gmapBW9vUVEVzoVVDADK52hCP2KGIYMJqeQx5+YP9Y6WxNO5iHUlCw==
