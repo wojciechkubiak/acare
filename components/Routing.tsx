@@ -51,6 +51,8 @@ const Routing = ({ router, children }: IRouting) => {
                 res.json().then((data: Token) => {
                   if (data?.authToken) {
                     sessionStorage.setItem("authToken", data.authToken);
+                    setRefreshToken(refresh);
+                    setAuthToken(data.authToken);
                     setIsAuth(true);
                     setIsLoading(false);
                     router?.push("/");

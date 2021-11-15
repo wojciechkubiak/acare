@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import AnimatedMenuButton from "../components/AnimatedMenuButton";
 import AuthContext from "../context/AuthContext";
 import Animal from "../assets/animal.png";
@@ -11,6 +11,7 @@ import { BiExit } from "react-icons/bi";
 import styled from "styled-components";
 import router from "next/router";
 import { browser } from "process";
+import { BaseRoutes } from "../utils/Routes";
 
 type Props = {};
 
@@ -66,7 +67,6 @@ const LogOutButton = styled(BiExit)`
 
 const Menu: React.FC<Props> = () => {
   const authCtx = useContext(AuthContext);
-  const [userChoice, setUserChoice] = useState<boolean | undefined>();
 
   const logOut = () => {
     document.cookie = ``;
@@ -85,12 +85,36 @@ const Menu: React.FC<Props> = () => {
           </HeaderContainer>
           <Container>
             <MenuContainer>
-              <AnimatedMenuButton imgSrc={Animal} text="Animals" />
-              <AnimatedMenuButton imgSrc={Food} text="Food" />
-              <AnimatedMenuButton imgSrc={Place} text="Cages" />
-              <AnimatedMenuButton imgSrc={Chart} text="Charts" />
-              <AnimatedMenuButton imgSrc={Vet} text="Vets" />
-              <AnimatedMenuButton imgSrc={Settings} text="Settings" />
+              <AnimatedMenuButton
+                imgSrc={Animal}
+                text="Animals"
+                onClick={() => router.push(BaseRoutes.animals)}
+              />
+              <AnimatedMenuButton
+                imgSrc={Food}
+                text="Food"
+                onClick={() => router.push(BaseRoutes.food)}
+              />
+              <AnimatedMenuButton
+                imgSrc={Place}
+                text="Cages"
+                onClick={() => router.push(BaseRoutes.cages)}
+              />
+              <AnimatedMenuButton
+                imgSrc={Chart}
+                text="Charts"
+                onClick={() => router.push(BaseRoutes.charts)}
+              />
+              <AnimatedMenuButton
+                imgSrc={Vet}
+                text="Vets"
+                onClick={() => router.push(BaseRoutes.vets)}
+              />
+              <AnimatedMenuButton
+                imgSrc={Settings}
+                text="Settings"
+                onClick={() => router.push(BaseRoutes.settings)}
+              />
             </MenuContainer>
           </Container>
         </>

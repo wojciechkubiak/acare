@@ -40,12 +40,6 @@ const Error = () => {
         isPaused={false}
       />
       <AppNameHeader text="Page not found" />
-      <ButtonOutlined
-        text="BACK"
-        onClick={() => {
-          authCtx.isAuth ? router.push("/") : router.push("/login");
-        }}
-      />
     </Container>
   );
 };

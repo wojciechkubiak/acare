@@ -28,20 +28,27 @@ const Header = styled.h1<StyledProps>`
   }
 `;
 
+const Image = styled.img`
+  --webkit-filter: invert(25%);
+  filter: invert(25%);
+`;
+
 interface IAnimatedMenuButton {
   text: string;
   imgSrc: string;
+  onClick: () => void;
 }
 
-const AnimatedMenuButton = ({ text, imgSrc }: IAnimatedMenuButton) => {
+const AnimatedMenuButton = ({ text, imgSrc, onClick }: IAnimatedMenuButton) => {
   const [isOver, setIsOver] = useState<boolean>(true);
 
   return (
     <Button
       onMouseOver={() => setIsOver(false)}
       onMouseOut={() => setIsOver(true)}
+      onClick={onClick}
     >
-      <img src={imgSrc} alt="animated-btn" />
+      <Image src={imgSrc} alt="animated-btn" />
       <Header isOver={isOver}>{text}</Header>
     </Button>
   );
