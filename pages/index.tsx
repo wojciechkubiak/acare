@@ -77,7 +77,7 @@ const Menu: React.FC<Props> = () => {
   const [isOver, setIsOver] = useState<boolean>(false);
 
   const logOut = () => {
-    document.cookie = ``;
+    document.cookie = "refreshToken= ; expires = Thu, 01 Jan 1970 00:00:00 GMT"
     sessionStorage.removeItem("authToken");
 
     router.push("/login");
