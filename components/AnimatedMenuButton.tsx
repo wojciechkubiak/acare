@@ -28,9 +28,10 @@ const Header = styled.h1<StyledProps>`
   }
 `;
 
-const Image = styled.img`
-  --webkit-filter: invert(25%);
-  filter: invert(25%);
+const Image = styled.img<StyledProps>`
+  transition: 500ms all;
+  --webkit-filter: ${(props) => (props.isOver ? "invert(25%)" : "invert(15%)")};
+  filter: ${(props) => (props.isOver ? "invert(25%)" : "invert(15%)")};
 `;
 
 interface IAnimatedMenuButton {
@@ -48,7 +49,7 @@ const AnimatedMenuButton = ({ text, imgSrc, onClick }: IAnimatedMenuButton) => {
       onMouseOut={() => setIsOver(true)}
       onClick={onClick}
     >
-      <Image src={imgSrc} alt="animated-btn" />
+      <Image src={imgSrc} alt="animated-btn" isOver={isOver} />
       <Header isOver={isOver}>{text}</Header>
     </Button>
   );

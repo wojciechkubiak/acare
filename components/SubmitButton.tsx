@@ -1,23 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import { BsArrowRightSquareFill } from "react-icons/bs";
+
+interface StyledProps {
+  isOver: boolean;
+}
 
 const Btn = styled.button`
-  padding: 20px;
   cursor: pointer;
   transition: 500ms all;
   background-color: transparent;
-  width: 60%;
   box-shadow: none;
-  border: 4px solid #ebb8c6;
-  border-radius: 8px;
-  font-family: Ubuntu, sans-serif;
-  font-size: 22px;
-  color: white;
-  color: rgba(0, 0, 0, 0.6);
+  border: none;
+`;
 
-  &:hover {
-    border: 4px solid #d37992;
-  }
+const Arrow = styled(BsArrowRightSquareFill)<StyledProps>`
+  transition: 500ms all;
+  --webkit-filter: ${(props) => (props.isOver ? "invert(25%)" : "invert(15%)")};
+  filter: ${(props) => (props.isOver ? "invert(25%)" : "invert(15%)")};
 `;
 
 interface ISubmitButton {
@@ -25,10 +25,19 @@ interface ISubmitButton {
   isDisabled: boolean;
 }
 
-const SubmitButton = (props: ISubmitButton) => (
-  <Btn type="submit" disabled={props.isDisabled}>
-    {props.text}
-  </Btn>
-);
+const SubmitButton = (props: ISubmitButton) => {
+  const [isOver, setIsOver] = useState<boolean>(false);
+
+  return (
+    <Btn
+      type="submit"
+      disabled={props.isDisabled}
+      onMouseOver={() => setIsOver(false)}
+      onMouseOut={() => setIsOver(true)}
+    >
+      <Arrow size={64} isOver={isOver} />
+    </Btn>
+  );
+};
 
 export default SubmitButton;

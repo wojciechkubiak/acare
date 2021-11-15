@@ -15,6 +15,10 @@ import { BaseRoutes } from "../utils/Routes";
 
 type Props = {};
 
+interface StyledProps {
+  isOver: boolean;
+}
+
 const Container = styled.div`
   min-height: 100vh;
   display: flex;
@@ -61,12 +65,16 @@ const HeaderContainer = styled.h1`
   justify-content: space-between;
 `;
 
-const LogOutButton = styled(BiExit)`
+const LogOutButton = styled(BiExit)<StyledProps>`
   cursor: pointer;
+  transition: 500ms all;
+  --webkit-filter: ${(props) => (props.isOver ? "invert(25%)" : "invert(15%)")};
+  filter: ${(props) => (props.isOver ? "invert(25%)" : "invert(15%)")};
 `;
 
 const Menu: React.FC<Props> = () => {
   const authCtx = useContext(AuthContext);
+  const [isOver, setIsOver] = useState<boolean>(false);
 
   const logOut = () => {
     document.cookie = ``;
@@ -81,7 +89,13 @@ const Menu: React.FC<Props> = () => {
         <>
           <HeaderContainer>
             <Header onClick={() => router.push("/")}>Animacare</Header>
-            <LogOutButton onClick={logOut} size={42} />
+            <LogOutButton
+              onMouseOver={() => setIsOver(false)}
+              onMouseOut={() => setIsOver(true)}
+              onClick={logOut}
+              size={42}
+              isOver={isOver}
+            />
           </HeaderContainer>
           <Container>
             <MenuContainer>
