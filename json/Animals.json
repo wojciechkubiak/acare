@@ -1,0 +1,34 @@
+{
+  "results": [
+    {
+      "id": "dsadsadsadsa",
+      "name": "Chomikel",
+      "type": "Chomik",
+      "weight": 20,
+      "sex": "m",
+      "wUnit": "g",
+      "length": 20,
+      "lUnit": "cm",
+      "born": "2021-11-16T17:03:16.297Z",
+      "color": "#8A3F3F",
+      "medications": null,
+      "vet": null,
+      "container": null
+    },
+    {
+      "id": "dsadsadsad",
+      "name": "Pieselel",
+      "type": "Pies",
+      "weight": 45,
+      "sex": "f",
+      "wUnit": "kg",
+      "length": 100,
+      "lUnit": "cm",
+      "born": "2021-11-12T17:03:16.297Z",
+      "color": "#D6D6B3",
+      "medications": null,
+      "vet": null,
+      "container": null
+    }
+  ]
+}

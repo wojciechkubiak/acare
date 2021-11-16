@@ -130,7 +130,7 @@ const Login: React.FC = () => {
         <ButtonsContainer>
           {!isLoading ? (
             <>
-              <SubmitButton text="SUBMIT" isDisabled={isLoading} />
+              <SubmitButton isDisabled={isLoading} />
               <TextButton
                 text="Create new account"
                 onClick={() => Router.push("/register")}

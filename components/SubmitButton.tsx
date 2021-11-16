@@ -21,19 +21,25 @@ const Arrow = styled(BsArrowRightSquareFill)<StyledProps>`
 `;
 
 interface ISubmitButton {
-  text: string;
   isDisabled: boolean;
+  btnType?: "button" | "submit";
+  onClick?: () => void;
 }
 
-const SubmitButton = (props: ISubmitButton) => {
+const SubmitButton = ({
+  isDisabled,
+  onClick,
+  btnType = "submit",
+}: ISubmitButton) => {
   const [isOver, setIsOver] = useState<boolean>(false);
 
   return (
     <Btn
-      type="submit"
-      disabled={props.isDisabled}
+      type={btnType}
+      disabled={isDisabled}
       onMouseOver={() => setIsOver(false)}
       onMouseOut={() => setIsOver(true)}
+      onClick={onClick}
     >
       <Arrow size={64} isOver={isOver} />
     </Btn>

@@ -23,8 +23,8 @@ type Props = {
   children: ReactNode;
 };
 
-const FormContainer: React.FC = (props: Props) => (
-  <FormContainerBody>{props.children}</FormContainerBody>
+const FormContainer: React.FC = ({children}: Props) => (
+  <FormContainerBody>{children}</FormContainerBody>
 );
 
 export default FormContainer;

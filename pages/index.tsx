@@ -7,20 +7,14 @@ import Place from "../assets/place.png";
 import Chart from "../assets/chart.png";
 import Vet from "../assets/vet.png";
 import Settings from "../assets/settings.png";
-import { BiExit } from "react-icons/bi";
 import styled from "styled-components";
 import router from "next/router";
-import { browser } from "process";
 import { BaseRoutes } from "../utils/Routes";
 
-type Props = {};
-
-interface StyledProps {
-  isOver: boolean;
-}
+interface Props {}
 
 const Container = styled.div`
-  min-height: 100vh;
+  min-height: calc(100vh - 64px);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -39,64 +33,13 @@ const MenuContainer = styled.div`
   flex-direction: row;
 `;
 
-const ButtonContainer = styled.div`
-  height: 200px;
-`;
-
-const Header = styled.h1`
-  font-family: "Merienda", cursive;
-  font-weight: 400;
-  color: rgba(0, 0, 0, 0.67);
-  font-size: 32px;
-  text-align: center;
-  cursor: pointer;
-  margin: 0 !important;
-  padding-left: 20px;
-  padding-top: 8px;
-`;
-
-const HeaderContainer = styled.h1`
-  position: fixed;
-  margin: 0 !important;
-  min-height: 50px;
-  width: 100vw;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-`;
-
-const LogOutButton = styled(BiExit)<StyledProps>`
-  cursor: pointer;
-  transition: 500ms all;
-  --webkit-filter: ${(props) => (props.isOver ? "invert(25%)" : "invert(15%)")};
-  filter: ${(props) => (props.isOver ? "invert(25%)" : "invert(15%)")};
-`;
-
 const Menu: React.FC<Props> = () => {
   const authCtx = useContext(AuthContext);
-  const [isOver, setIsOver] = useState<boolean>(false);
-
-  const logOut = () => {
-    document.cookie = "refreshToken= ; expires = Thu, 01 Jan 1970 00:00:00 GMT"
-    sessionStorage.removeItem("authToken");
-
-    router.push("/login");
-  };
 
   return (
     <>
       {authCtx.isAuth && (
         <>
-          <HeaderContainer>
-            <Header onClick={() => router.push("/")}>Animacare</Header>
-            <LogOutButton
-              onMouseOver={() => setIsOver(false)}
-              onMouseOut={() => setIsOver(true)}
-              onClick={logOut}
-              size={42}
-              isOver={isOver}
-            />
-          </HeaderContainer>
           <Container>
             <MenuContainer>
               <AnimatedMenuButton
@@ -111,7 +54,7 @@ const Menu: React.FC<Props> = () => {
               />
               <AnimatedMenuButton
                 imgSrc={Place}
-                text="Cages"
+                text="Containers"
                 onClick={() => router.push(BaseRoutes.cages)}
               />
               <AnimatedMenuButton
