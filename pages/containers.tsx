@@ -3,8 +3,11 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import SectionHeader from "../components/SectionHeader";
 import { BaseRoutes } from "../utils/Routes";
+import { Form } from "react-bootstrap";
 import Animal from "../models/Animal";
+import Place from "../models/Place";
 import Animals from "../json/Animals.json";
+import Places from "..//json/Places.json";
 import AnimalRectTile from "../components/AnimalRectTile";
 import FullscreenLayout from "../components/FullscreenLayout";
 import FormContainer from "../components/FormContainer";
@@ -21,23 +24,25 @@ const Container = styled.div`
   width: 70%;
   min-height: 200px;
   background-color: white;
+  overflow: hidden;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
     rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  margin-top: 70px;
+  margin-top: 90px;
   position: relative;
   left: 50%;
   transform: translateX(-50%);
   padding: 20px;
+  margin-bottom: 24px;
 `;
 
 const AnimalsContainer = styled.div<AnimalContainerStyle>`
   width: 100%;
   min-height: 200px;
-  border: 4px dotted #d1cfe2;
+  border: 3px dotted #d1cfe2;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -58,7 +63,7 @@ const AnimalsContainer = styled.div<AnimalContainerStyle>`
 const AnimalContainers = styled.div`
   width: 100%;
   min-height: 200px;
-  border: 4px dotted #d1cfe2;
+  border: 3px dotted #d1cfe2;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -88,6 +93,14 @@ const FormHeader = styled.h1`
   text-align: center;
 `;
 
+const ControlHeader = styled.h3`
+  margin-top: 16px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.67);
+  font-size: 28px;
+  text-align: center;
+`;
+
 const ID = styled.h1`
   font-family: "Roboto", sans-serif;
   font-weight: 600;
@@ -99,18 +112,52 @@ const ID = styled.h1`
 const Button = styled.div`
   display: flex;
   justify-content: end;
+  padding: 0px;
+`;
+
+const Control = styled(Form.Control)`
+  margin-top: 24px;
+  margin-bottom: 24px;
+  width: 100%;
+  border: 2px solid gray;
+  padding: 10px 20px 10px 20px;
+  border-radius: 2px;
+  font-size: 32px;
+`;
+
+const CloseButton = styled.button`
+  border: none;
+  background-color: transparent;
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  font-size: 24px;
+  cursor: pointer;
 `;
 
 const Containers: React.FC<Props> = () => {
   const [animals, setAnimals] = useState<Animal[]>([]);
+  const [places, setPlaces] = useState<Place[]>([]);
   const [showContainerPicker, setShowContainerPicker] =
     useState<boolean>(false);
 
   const [currentAnimal, setCurrentAnimal] = useState<string | null>();
 
-  const appendAnimal = (animal: Animal) => {
-    setAnimals((animals) => animals.concat(animal));
+  const appendAnimals = (animal: Animal) => {
+    setAnimals((current) => current.concat(animal));
   };
+
+  const appendPlaces = (place: Place) => {
+    setPlaces((current) => current.concat(place));
+  };
+
+  // const handleData = (
+  //   input: Animal | Place,
+  //   current: Animal[] | Place[],
+  //   cb: Function
+  // ) => {
+  //   cb(() => current.concat(input));
+  // };
 
   useEffect(() => {
     const animals = Animals["results"];
@@ -119,7 +166,18 @@ const Containers: React.FC<Props> = () => {
       const AnimalUnit = new Animal();
       AnimalUnit.parse(animal);
 
-      appendAnimal(AnimalUnit);
+      appendAnimals(AnimalUnit);
+    }
+  }, []);
+
+  useEffect(() => {
+    const places = Places["results"];
+
+    for (const place of places) {
+      const PlaceUnit = new Place();
+      PlaceUnit.parse(place);
+
+      appendPlaces(PlaceUnit);
     }
   }, []);
 
@@ -161,25 +219,43 @@ const Containers: React.FC<Props> = () => {
         </AnimalsContainer>
         <SectionHeader text="Containers" />
         <AnimalContainers>
-          <Info>
-            Seems like your animals have no place to live. Click to add{" "}
-            <strong>new one</strong>.
-          </Info>
+          {places.length > 0 ? (
+            places?.map((place) => <h1>{place.id}</h1>)
+          ) : (
+            <Info>
+              Seems like your animals have no place to live. Click to add{" "}
+              <strong>new one</strong>.
+            </Info>
+          )}
         </AnimalContainers>
       </Container>
       {showContainerPicker && currentAnimal && (
-        <FullscreenLayout hide={handleHideContainerPicker}>
+        <FullscreenLayout>
           <FormContainer>
             <div>
+              <CloseButton onClick={handleHideContainerPicker}>x</CloseButton>
               <FormHeader>Pick container for:</FormHeader>
               <ID>{currentAnimal}</ID>
-              <Button>
-                <SubmitButton
-                  btnType="button"
-                  onClick={() => {}}
-                  isDisabled={false}
-                />
-              </Button>
+              {/* <ControlHeader>Possible containers:</ControlHeader> */}
+              {places?.length > 0 ? (
+                <>
+                  <Control as="select" onChange={() => {}}>
+                    <option value={null}></option>
+                    {places?.map((place) => (
+                      <option value={place.id}>{place.name}</option>
+                    ))}
+                  </Control>
+                  <Button>
+                    <SubmitButton
+                      btnType="button"
+                      onClick={() => {}}
+                      isDisabled={false}
+                    />
+                  </Button>{" "}
+                </>
+              ) : (
+                <ControlHeader>No containers available</ControlHeader>
+              )}
             </div>
           </FormContainer>
         </FullscreenLayout>

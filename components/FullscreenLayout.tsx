@@ -12,11 +12,10 @@ const Layout = styled.div`
 
 type Props = {
   children: ReactNode;
-  hide: () => void;
 };
 
-const FullscreenLayout: React.FC<Props> = ({ children, hide }: Props) => (
-  <Layout onClick={hide}>{children}</Layout>
+const FullscreenLayout: React.FC<Props> = ({ children }: Props) => (
+  <Layout>{children}</Layout>
 );
 
 export default FullscreenLayout;

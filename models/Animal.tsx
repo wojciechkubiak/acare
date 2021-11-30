@@ -1,17 +1,19 @@
+import { Units } from "./Place";
+
 export default class Animal {
   public id: string = null;
   public name: string | null = null;
   public type: string | null = null;
   public weight: number = 0;
   public sex: string = null;
-  public wUnit: string = null;
+  public wUnit: Units | null = null;
   public length: number = 0;
-  public lUnit: string = null;
+  public lUnit: Units | null = null;
   public born: string = new Date().toISOString();
   public color: string = null;
   public medications: string[] | null = [];
   public vet: string | null = null;
-  public contaienr: string | null = null;
+  public container: string | null = null;
 
   constructor(instanceData?: Animal) {
     if (instanceData) {

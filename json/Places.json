@@ -1,0 +1,24 @@
+{
+  "results": [
+    {
+      "id": "1",
+      "name": "Chomiki",
+      "type": "cage",
+      "width": 20,
+      "height": 30,
+      "depth": 20,
+      "units": "cm",
+      "animals": []
+    },
+    {
+      "id": "2",
+      "name": "Niedzwiedzie",
+      "type": "cage",
+      "width": 20,
+      "height": 30,
+      "depth": 20,
+      "units": "m",
+      "animals": []
+    }
+  ]
+}

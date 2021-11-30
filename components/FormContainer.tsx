@@ -4,7 +4,7 @@ import styled from "styled-components";
 const FormContainerBody = styled.div`
   min-width: 500px;
   width: 25%;
-  padding: 0 20px 40px 20px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
