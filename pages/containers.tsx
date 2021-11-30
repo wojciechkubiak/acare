@@ -45,7 +45,7 @@ const Container = styled.div`
 const AnimalsContainer = styled.div<AnimalContainerStyle>`
   width: 100%;
   min-height: 200px;
-  border: 3px dotted #d1cfe2;
+  border: 3px dotted #7b7b7b;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -65,14 +65,13 @@ const AnimalsContainer = styled.div<AnimalContainerStyle>`
 const AnimalContainers = styled.div`
   width: 100%;
   min-height: 200px;
-  border: 3px dotted #d1cfe2;
+  border: 3px dotted #7b7b7b;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   border-radius: 24px;
   transition: 500ms all;
-  cursor: pointer;
 
   & :hover {
     transition: 500ms all;
@@ -106,7 +105,8 @@ const ControlHeader = styled.h3`
 const ID = styled.h1`
   font-family: "Roboto", sans-serif;
   font-weight: 600;
-  color: rgba(0, 0, 0, 0.67);
+  letter-spacing: 1px;
+  color: rgba(0, 0, 0, 0.87);
   font-size: 24px;
   text-align: center;
 `;
@@ -121,22 +121,27 @@ const Control = styled(Form.Control)`
   margin-top: 24px;
   margin-bottom: 24px;
   width: 100%;
-  border: 2px solid gray;
+  border: 4px solid #515151;
   padding: 10px 20px 10px 20px;
   border-radius: 2px;
   font-size: 24px;
   color: rgba(0, 0, 0, 0.8);
   font-family: "Roboto", sans-serif;
+
   &:focus {
-    border: 2px solid gray;
+    border: 4px solid #515151;
+    outline: none;
+    box-shadow: none;
   }
   &:active {
-    border: 2px solid gray;
+    border: 4px solid #515151;
+    outline: none;
+    box-shadow: none;
   }
 `;
 
 const Option = styled.option`
-  color: rgba(0, 0, 0, 0.6);
+  color: #515151;
   font-family: "Roboto", sans-serif;
   font-weight: 400;
   padding: 20px 10px 20px 10px;
@@ -309,6 +314,7 @@ const Containers: React.FC<Props> = () => {
               <CloseButton onClick={handleHideContainerPicker}>x</CloseButton>
               <FormHeader>Pick container for:</FormHeader>
               <ID>{currentAnimal}</ID>
+              //TODO: Add description from animal object
               {places?.length > 0 ? (
                 <>
                   <Control

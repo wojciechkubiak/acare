@@ -12,6 +12,7 @@ export default class Animal {
   public born: string = new Date().toISOString();
   public color: string = null;
   public medications: string[] | null = [];
+  public description: string | null = null;
   public vet: string | null = null;
   public container: string | null = null;
 

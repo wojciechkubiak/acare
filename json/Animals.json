@@ -11,6 +11,7 @@
       "lUnit": "cm",
       "born": "2021-11-16T17:03:16.297Z",
       "color": "#8A3F3F",
+      "description": "Weird angry eyes, be careful.",
       "medications": null,
       "vet": null,
       "container": null
@@ -25,6 +26,7 @@
       "length": 100,
       "lUnit": "cm",
       "born": "2021-11-12T17:03:16.297Z",
+      "description": "This doggo bites, like a lot.",
       "color": "#D6D6B3",
       "medications": null,
       "vet": null,

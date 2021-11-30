@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { BsArrowRightSquareFill } from "react-icons/bs";
+import { BsArrowRight } from "react-icons/bs";
 
 interface StyledProps {
   isOver: boolean;
@@ -12,9 +12,10 @@ const Btn = styled.button`
   background-color: transparent;
   box-shadow: none;
   border: none;
+  padding: 0 !important;
 `;
 
-const Arrow = styled(BsArrowRightSquareFill)<StyledProps>`
+const Arrow = styled(BsArrowRight)<StyledProps>`
   transition: 500ms all;
   --webkit-filter: ${(props) => (props.isOver ? "invert(25%)" : "invert(15%)")};
   filter: ${(props) => (props.isOver ? "invert(25%)" : "invert(15%)")};

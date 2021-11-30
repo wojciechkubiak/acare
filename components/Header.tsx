@@ -22,7 +22,7 @@ const HeaderContainer = styled.div<StyledProps>`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  height: 60px;
+  height: 80px;
   transition: 500ms;
   box-shadow: ${(props) =>
     props.isOut
@@ -52,7 +52,6 @@ const Logo = styled.h1`
   cursor: pointer;
   margin: 0 !important;
   padding-left: 20px;
-  padding-top: 8px;
 `;
 
 const Header: React.FC = () => {

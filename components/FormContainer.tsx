@@ -13,6 +13,7 @@ const FormContainerBody = styled.div`
   position: absolute;
   left: 50%;
   top: 50%;
+  border: 4px solid #515151;
   transform: translate(-50%, -50%);
   box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
     rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
@@ -23,7 +24,7 @@ type Props = {
   children: ReactNode;
 };
 
-const FormContainer: React.FC = ({children}: Props) => (
+const FormContainer: React.FC = ({ children }: Props) => (
   <FormContainerBody>{children}</FormContainerBody>
 );
 

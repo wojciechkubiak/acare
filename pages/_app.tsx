@@ -8,7 +8,8 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 const GlobalStyle = createGlobalStyle`
   body {
     margin: 0 !important;
-    background-color: #f5f5f5;
+    background: #f5f5f5;  
+    min-height: 100vh;
   }
 
   ::-webkit-scrollbar {
