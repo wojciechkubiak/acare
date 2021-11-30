@@ -1,9 +1,10 @@
 import router from "next/router";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import SectionHeader from "../components/SectionHeader";
 import { BaseRoutes } from "../utils/Routes";
 import { Form } from "react-bootstrap";
+import { v4 as uuid } from "uuid";
 import Animal from "../models/Animal";
 import Place from "../models/Place";
 import Animals from "../json/Animals.json";
@@ -12,6 +13,8 @@ import AnimalRectTile from "../components/AnimalRectTile";
 import FullscreenLayout from "../components/FullscreenLayout";
 import FormContainer from "../components/FormContainer";
 import SubmitButton from "../components/SubmitButton";
+import AnimalContainer from "../components/AnimalContainer";
+import AddButton from "../components/AddButton";
 
 interface Props {}
 
@@ -25,7 +28,7 @@ const Container = styled.div`
   min-height: 200px;
   background-color: white;
   overflow: hidden;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
+  box-shadow: rgba(50, 50, 93, 0.25) 0 13px 27px -5px,
     rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
   display: flex;
   justify-content: center;
@@ -56,7 +59,6 @@ const AnimalsContainer = styled.div<AnimalContainerStyle>`
 
   & :hover {
     transition: 500ms all;
-    background-color: #fafafa;
   }
 `;
 
@@ -74,7 +76,6 @@ const AnimalContainers = styled.div`
 
   & :hover {
     transition: 500ms all;
-    background-color: #fafafa;
   }
 `;
 
@@ -91,6 +92,7 @@ const FormHeader = styled.h1`
   color: rgba(0, 0, 0, 0.67);
   font-size: 32px;
   text-align: center;
+  margin-bottom: 20px;
 `;
 
 const ControlHeader = styled.h3`
@@ -112,7 +114,7 @@ const ID = styled.h1`
 const Button = styled.div`
   display: flex;
   justify-content: end;
-  padding: 0px;
+  padding: 0;
 `;
 
 const Control = styled(Form.Control)`
@@ -122,7 +124,30 @@ const Control = styled(Form.Control)`
   border: 2px solid gray;
   padding: 10px 20px 10px 20px;
   border-radius: 2px;
-  font-size: 32px;
+  font-size: 24px;
+  color: rgba(0, 0, 0, 0.8);
+  font-family: "Roboto", sans-serif;
+  &:focus {
+    border: 2px solid gray;
+  }
+  &:active {
+    border: 2px solid gray;
+  }
+`;
+
+const Option = styled.option`
+  color: rgba(0, 0, 0, 0.6);
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  padding: 20px 10px 20px 10px;
+`;
+
+const HeaderButton = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
 `;
 
 const CloseButton = styled.button`
@@ -142,6 +167,7 @@ const Containers: React.FC<Props> = () => {
     useState<boolean>(false);
 
   const [currentAnimal, setCurrentAnimal] = useState<string | null>();
+  const [currentPlace, setCurrentPlace] = useState<string | null>();
 
   const appendAnimals = (animal: Animal) => {
     setAnimals((current) => current.concat(animal));
@@ -150,14 +176,6 @@ const Containers: React.FC<Props> = () => {
   const appendPlaces = (place: Place) => {
     setPlaces((current) => current.concat(place));
   };
-
-  // const handleData = (
-  //   input: Animal | Place,
-  //   current: Animal[] | Place[],
-  //   cb: Function
-  // ) => {
-  //   cb(() => current.concat(input));
-  // };
 
   useEffect(() => {
     const animals = Animals["results"];
@@ -184,11 +202,60 @@ const Containers: React.FC<Props> = () => {
   const handleHideContainerPicker = () => {
     setShowContainerPicker(false);
     setCurrentAnimal(null);
+    setCurrentPlace(null);
   };
 
   const handleShowContainerPicker = (id: string) => {
     setShowContainerPicker(true);
     setCurrentAnimal(id);
+  };
+
+  const insertAnimalIntoPlace = () => {
+    const animalIndex = animals.findIndex(
+      (animal) => animal.id === currentAnimal
+    );
+    const placeIndex = places.findIndex((place) => place.id === currentPlace);
+
+    if (animalIndex !== -1 && placeIndex !== -1) {
+      const animal = animals[animalIndex];
+      if (animal) {
+        const newPlaces = places;
+        const newAnimals = animals;
+
+        newPlaces[placeIndex].animals.push(animal);
+        newAnimals.splice(animalIndex, 1);
+
+        setPlaces(newPlaces);
+        setAnimals(newAnimals);
+      }
+
+      handleHideContainerPicker();
+    } else if (animalIndex === -1 && placeIndex !== -1) {
+      findAnimal(places, currentAnimal, placeIndex);
+    }
+  };
+
+  const findAnimal = (
+    oldPlaces: Place[],
+    animalIndex: string,
+    newPlaceIndex: number
+  ) => {
+    const newPlaces = places;
+
+    for (const [index, place] of places.entries()) {
+      const animalIndex = place.animals.findIndex(
+        (animal) => animal.id === currentAnimal
+      );
+
+      if (animalIndex !== -1) {
+        const newAnimal: Animal = place.animals[animalIndex];
+        newPlaces[index].animals.splice(animalIndex, 1);
+        newPlaces[newPlaceIndex].animals.push(newAnimal);
+
+        setPlaces(newPlaces);
+        handleHideContainerPicker();
+      }
+    }
   };
 
   return (
@@ -211,16 +278,22 @@ const Containers: React.FC<Props> = () => {
             animals?.map((animal) => (
               <AnimalRectTile
                 animal={animal}
-                key={animal.id}
+                key={uuid()}
                 onClick={handleShowContainerPicker}
               />
             ))
           )}
         </AnimalsContainer>
-        <SectionHeader text="Containers" />
+        <HeaderButton>
+          <SectionHeader text="Containers" />
+          <AddButton isDisabled={false} onClick={() => {}} />
+        </HeaderButton>
         <AnimalContainers>
           {places.length > 0 ? (
-            places?.map((place) => <h1>{place.id}</h1>)
+            <AnimalContainer
+              places={places}
+              onTileClick={handleShowContainerPicker}
+            />
           ) : (
             <Info>
               Seems like your animals have no place to live. Click to add{" "}
@@ -236,20 +309,27 @@ const Containers: React.FC<Props> = () => {
               <CloseButton onClick={handleHideContainerPicker}>x</CloseButton>
               <FormHeader>Pick container for:</FormHeader>
               <ID>{currentAnimal}</ID>
-              {/* <ControlHeader>Possible containers:</ControlHeader> */}
               {places?.length > 0 ? (
                 <>
-                  <Control as="select" onChange={() => {}}>
-                    <option value={null}></option>
+                  <Control
+                    as="select"
+                    onChange={(event) => {
+                      setCurrentPlace(event.target.value);
+                    }}
+                    value={currentPlace}
+                  >
+                    <Option value={null} />
                     {places?.map((place) => (
-                      <option value={place.id}>{place.name}</option>
+                      <Option key={uuid()} value={place.id}>
+                        {place.name}
+                      </Option>
                     ))}
                   </Control>
                   <Button>
                     <SubmitButton
                       btnType="button"
-                      onClick={() => {}}
-                      isDisabled={false}
+                      onClick={insertAnimalIntoPlace}
+                      isDisabled={!currentAnimal || !currentPlace}
                     />
                   </Button>{" "}
                 </>

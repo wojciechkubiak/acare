@@ -50,6 +50,7 @@ export default class Place {
     this.width = data["width"];
     this.height = data["height"];
     this.depth = data["depth"];
+    this.units = data["units"];
     this.animals = data["animals"];
   }
 }

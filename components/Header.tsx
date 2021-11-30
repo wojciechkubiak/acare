@@ -1,12 +1,16 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 import { BiExit } from "react-icons/bi";
+import useScroll from "../hooks/useScroll";
 import AuthContext from "../context/AuthContext";
 
 const ERROR_ROUTE = "/404";
+interface StyledProps {
+  isOut: boolean;
+}
 
-const HeaderContainer = styled.div`
+const HeaderContainer = styled.div<StyledProps>`
   position: fixed;
   top: 0;
   left: 0;
@@ -17,6 +21,14 @@ const HeaderContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
+  height: 60px;
+  transition: 500ms;
+  box-shadow: ${(props) =>
+    props.isOut
+      ? "rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,rgba(0, 0, 0, 0.3) 0px 8px 16px -8px"
+      : "none"};
+  background-color: ${(props) => (props.isOut ? "white" : "transparent")};
 `;
 
 const LogOutButton = styled(BiExit)`
@@ -45,7 +57,7 @@ const Logo = styled.h1`
 
 const Header: React.FC = () => {
   const router = useRouter();
-
+  const isOut = useScroll();
   const authCtx = useContext(AuthContext);
   // const isActive: (pathname: string) => boolean = (pathname) =>
   //   router.pathname === pathname;
@@ -59,13 +71,10 @@ const Header: React.FC = () => {
   };
 
   return (
-    <HeaderContainer>
+    <HeaderContainer isOut={isOut}>
       <Logo onClick={() => router.push("/")}>Animacare</Logo>
       {authCtx.isAuth && router.pathname !== ERROR_ROUTE && (
-        <LogOutButton
-          onClick={logOut}
-          size={42}
-        />
+        <LogOutButton onClick={logOut} size={42} />
       )}
     </HeaderContainer>
   );

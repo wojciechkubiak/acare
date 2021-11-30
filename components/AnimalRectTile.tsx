@@ -6,9 +6,10 @@ import { GiFemale, GiMale } from "react-icons/gi";
 type TileStyle = {
   color?: string;
   isOver?: boolean;
+  size?: number;
 };
 
-const Container = styled.div`
+const Container = styled.div<TileStyle>`
   width: 132px;
   height: 132px;
   display: flex;
@@ -20,23 +21,22 @@ const Container = styled.div`
 `;
 
 const Tile = styled.div<TileStyle>`
-  background-color: ${(props) => props.color};
-  width: 112px;
-  height: 112px;
-  color: white;
-  border-radius: 12px;
-
+  width: ${(props) => `${props.size}px`};
+  height: ${(props) => `${props.size}px`};
+  color: rgba(0, 0, 0, 0.87);
+  cursor: pointer;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 6px;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
+  padding: 12px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0 13px 27px -5px,
     rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
   transition: 500ms all;
+  border: 4px solid ${(props) => props.color};
 
   &:hover {
-    padding: 0px;
+    transform: translateY(-10px);
   }
 `;
 
@@ -50,12 +50,13 @@ const Header = styled.h1`
 interface IAnimalRectTile {
   animal: Animal;
   onClick: (id: string) => void;
+  tileSize?: number;
 }
 
-const AnimalRectTile = ({ animal, onClick }: IAnimalRectTile) => {
+const AnimalRectTile = ({ animal, tileSize, onClick }: IAnimalRectTile) => {
   return (
     <Container onClick={() => onClick(animal.id)}>
-      <Tile color={animal.color}>
+      <Tile color={animal.color} size={!tileSize ? 112 : tileSize}>
         <Header>{animal.type[0]?.toUpperCase()}</Header>
         {animal.sex === "m" ? <GiMale size={24} /> : <GiFemale size={24} />}
       </Tile>

@@ -10,15 +10,16 @@ const Button = styled.div`
   height: 220px;
   margin: 20px;
   display: flex;
+  padding: 20px;
   justify-content: space-evenly;
   align-items: center;
   flex-direction: column;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
+  box-shadow: rgba(50, 50, 93, 0.25) 0 13px 27px -5px,
     rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
   cursor: pointer;
 `;
 
-const Header = styled.h1<StyledProps>`
+const Header = styled.h2<StyledProps>`
   transition: 500ms all;
   font-family: "Merienda", cursive;
   font-weight: 400;
