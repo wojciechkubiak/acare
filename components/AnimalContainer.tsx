@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { v4 as uuid } from "uuid";
-import { FaTrash } from "react-icons/fa";
 import Place from "../models/Place";
 import AnimalRectTile from "./AnimalRectTile";
 import React from "react";
@@ -13,7 +12,7 @@ const Container = styled.div`
 `;
 
 const AnimalContainerCard = styled.div`
-  border: 4px dotted #c1c1c1;
+  border: 4px solid #515151;
   margin-top: 24px;
   margin-bottom: 24px;
   width: 80%;
@@ -65,7 +64,8 @@ const Header = styled.h1`
 const BodyText = styled.p`
   font-family: "Roboto", sans-serif;
   font-weight: 400;
-  color: rgba(0, 0, 0, 0.87);
+  color: rgba(0, 0, 0, 0.67);
+  letter-spacing: 1px;
   width: 150px;
   font-size: 18px;
   display: flex;
@@ -91,11 +91,6 @@ const AnimalContainerUnits = styled.div`
   justify-content: space-evenly;
 `;
 
-const Trashcan = styled(FaTrash)`
-  color: white;
-  cursor: pointer;
-`;
-
 type Props = {
   places: Place[];
   onTileClick: (id: string) => void;
@@ -118,10 +113,7 @@ const AnimalContainer = ({ places, onTileClick }: Props) => {
       {places?.map((place) => (
         <AnimalContainerCard key={uuid()}>
           <ContainerData>
-            <Header>
-              <Trashcan size={24} />
-              {place.name}
-            </Header>
+            <Header>{place.name}</Header>
             <Data>
               <Text title="Type" text={place.type?.toString()} />
               <Text title="Width" text={`${place.width} ${place.units}`} />

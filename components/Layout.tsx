@@ -1,6 +1,7 @@
 import React, { ReactNode } from "react";
 import styled from "styled-components";
 import Header from "./Header";
+import VerticalMenu from "./VerticalMenu";
 import Opacity from "./Opacity";
 
 const LayoutContainer = styled.div`
@@ -11,13 +12,16 @@ const LayoutContainer = styled.div`
 
 type Props = {
   children: ReactNode;
+  isSection: boolean;
+  active: string;
 };
 
-const Layout: React.FC<Props> = (props) => (
+const Layout: React.FC<Props> = ({ children, isSection, active }: Props) => (
   <div>
     <Opacity>
-      <Header />
-      <LayoutContainer>{props.children}</LayoutContainer>
+      {!isSection && <Header />}
+      {isSection && <VerticalMenu active={active} />}
+      <LayoutContainer>{children}</LayoutContainer>
     </Opacity>
   </div>
 );

@@ -6,6 +6,14 @@ export enum Containers {
   TERRARIUM = "terrarium",
 }
 
+export enum LengthUnits {
+  CM = "cm",
+  M = "m",
+  MM = "mm",
+  FT = "feet",
+  IN = "inch",
+}
+
 export enum Units {
   KG = "kg",
   LB = "lb",
@@ -18,13 +26,13 @@ export enum Units {
 }
 
 export default class Place {
-  public id: string = null;
-  public name: string | null = null;
-  public type: Containers | null = null;
+  public id: string | null = null;
+  public name: string = "";
+  public type: Containers = Containers.CAGE;
   public width: number = 0;
   public height: number = 0;
   public depth: number = 0;
-  public units: Units | null = null;
+  public units: LengthUnits = LengthUnits.CM;
   public animals: Animal[] = [];
 
   constructor(instanceData?: Animal) {

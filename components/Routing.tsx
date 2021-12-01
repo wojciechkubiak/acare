@@ -4,8 +4,7 @@ import AuthContext from "../context/AuthContext";
 import Layout from "./Layout";
 import { Token } from "../pages/api/auth";
 import Loading from "./Loading";
-import { AuthRoutes, Routes } from "../utils/Routes";
-import { route } from "next/dist/next-server/server/router";
+import { AuthRoutes, Routes, Sections } from "../utils/Routes";
 
 interface IRouting {
   router: Router;
@@ -121,7 +120,9 @@ const Routing = ({ router, children }: IRouting) => {
         setTokens,
       }}
     >
-      <Layout>{handleBody()}</Layout>
+      <Layout isSection={Sections.includes(router.route)} active={router.route}>
+        {handleBody()}
+      </Layout>
     </AuthContext.Provider>
   );
 };

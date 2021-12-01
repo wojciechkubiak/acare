@@ -30,8 +30,8 @@ const Tile = styled.div<TileStyle>`
   justify-content: center;
   align-items: center;
   padding: 12px;
-  box-shadow: rgba(50, 50, 93, 0.25) 0 13px 27px -5px,
-    rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0 6px 14px -5px,
+    rgba(0, 0, 0, 0.3) 0px 4px 8px -4px;
   transition: 500ms all;
   border: 4px solid ${(props) => props.color};
 

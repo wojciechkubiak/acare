@@ -7,8 +7,7 @@ export const ErrorRoute = {
   error: "/404",
 };
 
-export const BaseRoutes = {
-  base: "/",
+export const SectionRoutes = {
   animals: "/animals",
   food: "/food",
   cages: "/containers",
@@ -17,4 +16,10 @@ export const BaseRoutes = {
   settings: "/settings",
 };
 
+export const BaseRoutes = {
+  base: "/",
+  ...SectionRoutes,
+};
+
 export const Routes = [AuthRoutes.login, AuthRoutes.register, BaseRoutes.base];
+export const Sections = Object.values(SectionRoutes);

@@ -6,7 +6,7 @@ import { BaseRoutes } from "../utils/Routes";
 import { Form } from "react-bootstrap";
 import { v4 as uuid } from "uuid";
 import Animal from "../models/Animal";
-import Place from "../models/Place";
+import Place, { Containers as PlaceType, LengthUnits } from "../models/Place";
 import Animals from "../json/Animals.json";
 import Places from "..//json/Places.json";
 import AnimalRectTile from "../components/AnimalRectTile";
@@ -14,7 +14,13 @@ import FullscreenLayout from "../components/FullscreenLayout";
 import FormContainer from "../components/FormContainer";
 import SubmitButton from "../components/SubmitButton";
 import AnimalContainer from "../components/AnimalContainer";
-import AddButton from "../components/AddButton";
+import BottomMenu from "../components/BottomMenu";
+import IconButton from "../components/IconButton";
+
+import { MdLibraryAdd } from "react-icons/md";
+import { BiTransferAlt } from "react-icons/bi";
+import { FaTrash } from "react-icons/fa";
+import VerticalDottedDivider from "../components/VerticalDottedDivider";
 
 interface Props {}
 
@@ -118,8 +124,8 @@ const Button = styled.div`
 `;
 
 const Control = styled(Form.Control)`
-  margin-top: 24px;
-  margin-bottom: 24px;
+  margin-top: 12px;
+  margin-bottom: 12px;
   width: 100%;
   border: 4px solid #515151;
   padding: 10px 20px 10px 20px;
@@ -138,6 +144,16 @@ const Control = styled(Form.Control)`
     outline: none;
     box-shadow: none;
   }
+`;
+
+const Label = styled(Form.Label)`
+  width: 100%;
+  padding-left: 12px;
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 0;
+  color: rgba(0, 0, 0, 0.8);
+  font-family: "Roboto", sans-serif;
 `;
 
 const Option = styled.option`
@@ -165,15 +181,72 @@ const CloseButton = styled.button`
   cursor: pointer;
 `;
 
+const AddIcon = styled(MdLibraryAdd)`
+  transition: 500ms all;
+  --webkit-filter: invert(25%);
+  filter: invert(25%);
+
+  &:hover {
+    --webkit-filter: invert(15%);
+    filter: invert(15%);
+  }
+`;
+
+const TransferIcon = styled(BiTransferAlt)`
+  transition: 500ms all;
+  --webkit-filter: invert(25%);
+  filter: invert(25%);
+
+  &:hover {
+    --webkit-filter: invert(15%);
+    filter: invert(15%);
+  }
+`;
+
+const RemoveIcon = styled(FaTrash)`
+  transition: 500ms all;
+  --webkit-filter: invert(25%);
+  filter: invert(25%);
+
+  &:hover {
+    --webkit-filter: invert(15%);
+    filter: invert(15%);
+  }
+`;
+
+enum ActiveLayout {
+  NONE,
+  AVAILABLE,
+  ADD,
+  TRANSFER,
+  REMOVE,
+}
+
 const Containers: React.FC<Props> = () => {
   const [animals, setAnimals] = useState<Animal[]>([]);
   const [places, setPlaces] = useState<Place[]>([]);
-  const [showContainerPicker, setShowContainerPicker] =
-    useState<boolean>(false);
+  const [activeLayout, setActiveLayout] = useState<ActiveLayout>(
+    ActiveLayout.NONE
+  );
 
   const [currentAnimal, setCurrentAnimal] = useState<string | null>();
   const [currentPlace, setCurrentPlace] = useState<string | null>();
 
+  const [type, setType] = useState<PlaceType>(PlaceType.CAGE);
+  const [unit, setUnit] = useState<LengthUnits>(LengthUnits.CM);
+  const [newName, setNewName] = useState<string>("");
+  const [width, setWidth] = useState<number>(0);
+  const [height, setHeight] = useState<number>(0);
+  const [depth, setDepth] = useState<number>(0);
+
+  const clearData = () => {
+    setType(PlaceType.CAGE);
+    setUnit(LengthUnits.CM);
+    setNewName("");
+    setWidth(0);
+    setHeight(0);
+    setDepth(0);
+  };
   const appendAnimals = (animal: Animal) => {
     setAnimals((current) => current.concat(animal));
   };
@@ -205,13 +278,13 @@ const Containers: React.FC<Props> = () => {
   }, []);
 
   const handleHideContainerPicker = () => {
-    setShowContainerPicker(false);
+    setActiveLayout(ActiveLayout.NONE);
     setCurrentAnimal(null);
     setCurrentPlace(null);
   };
 
   const handleShowContainerPicker = (id: string) => {
-    setShowContainerPicker(true);
+    setActiveLayout(ActiveLayout.AVAILABLE);
     setCurrentAnimal(id);
   };
 
@@ -263,8 +336,52 @@ const Containers: React.FC<Props> = () => {
     }
   };
 
+  const insertNewPlace = () => {
+    const placesCopy = places;
+    let newPlace = new Place();
+
+    newPlace.id = uuid(); //TODO: Created by backend/db - remove
+    newPlace.name = newName;
+    newPlace.type = type;
+    newPlace.width = width;
+    newPlace.height = height;
+    newPlace.depth = depth;
+    newPlace.units = unit;
+
+    placesCopy.push(newPlace);
+
+    setPlaces(placesCopy);
+    clearData();
+    setActiveLayout(ActiveLayout.NONE);
+  };
+  const MARGIN = "0 16px 0 16px";
+
   return (
     <>
+      <BottomMenu>
+        <IconButton
+          size={72}
+          onClick={() => setActiveLayout(ActiveLayout.ADD)}
+          margin={MARGIN}
+        >
+          <AddIcon size={72} />
+        </IconButton>
+        <IconButton
+          size={72}
+          onClick={() => setActiveLayout(ActiveLayout.TRANSFER)}
+          margin={MARGIN}
+        >
+          <TransferIcon size={72} />
+        </IconButton>
+        <VerticalDottedDivider />
+        <IconButton
+          size={72}
+          onClick={() => setActiveLayout(ActiveLayout.REMOVE)}
+          margin={MARGIN}
+        >
+          <RemoveIcon size={72} />
+        </IconButton>
+      </BottomMenu>
       <Container>
         <SectionHeader text="Available animals" />
         <AnimalsContainer
@@ -289,10 +406,7 @@ const Containers: React.FC<Props> = () => {
             ))
           )}
         </AnimalsContainer>
-        <HeaderButton>
-          <SectionHeader text="Containers" />
-          <AddButton isDisabled={false} onClick={() => {}} />
-        </HeaderButton>
+        <SectionHeader text="Containers" />
         <AnimalContainers>
           {places.length > 0 ? (
             <AnimalContainer
@@ -307,14 +421,94 @@ const Containers: React.FC<Props> = () => {
           )}
         </AnimalContainers>
       </Container>
-      {showContainerPicker && currentAnimal && (
+      {activeLayout === ActiveLayout.ADD && (
+        <FullscreenLayout>
+          <FormContainer>
+            <div>
+              <CloseButton
+                onClick={() => {
+                  setActiveLayout(ActiveLayout.NONE);
+                  clearData();
+                }}
+              >
+                x
+              </CloseButton>
+              <FormHeader>Create new container:</FormHeader>
+              {places?.length > 0 ? (
+                <>
+                  <Control
+                    as="select"
+                    onChange={(event) => setType(PlaceType[event.target.value])}
+                    defaultValue={type}
+                  >
+                    {Object.values(PlaceType).map((type) => (
+                      <Option key={uuid()} value={type}>
+                        {type}
+                      </Option>
+                    ))}
+                  </Control>
+                  <Control
+                    onChange={(event) => setNewName(event.target.value)}
+                    defaultValue={newName}
+                    placeholder="Enter name"
+                  />
+                  <Label>Width:</Label>
+                  <Control
+                    type="number"
+                    onChange={(event) => setWidth(Number(event.target.value))}
+                    defaultValue={width}
+                    placeholder="Enter width"
+                  />
+                  <Label>Height:</Label>
+                  <Control
+                    type="number"
+                    onChange={(event) => setHeight(Number(event.target.value))}
+                    defaultValue={height}
+                    placeholder="Enter height"
+                  />
+                  <Label>Depth:</Label>
+                  <Control
+                    type="number"
+                    onChange={(event) => setDepth(Number(event.target.value))}
+                    defaultValue={depth}
+                    placeholder="Enter depth"
+                  />
+                  <Control
+                    as="select"
+                    onChange={(event) =>
+                      setUnit(LengthUnits[event.target.value])
+                    }
+                    defaultValue={unit}
+                    placeholder="Enter name"
+                  >
+                    {Object.values(LengthUnits).map((unit) => (
+                      <Option key={uuid()} value={unit}>
+                        {unit}
+                      </Option>
+                    ))}
+                  </Control>
+                  <Button>
+                    <SubmitButton
+                      btnType="button"
+                      onClick={insertNewPlace}
+                      isDisabled={!(width && height && depth && newName.length)}
+                    />
+                  </Button>
+                </>
+              ) : (
+                <ControlHeader>No containers available</ControlHeader>
+              )}
+            </div>
+          </FormContainer>
+        </FullscreenLayout>
+      )}
+      {activeLayout === ActiveLayout.AVAILABLE && currentAnimal && (
         <FullscreenLayout>
           <FormContainer>
             <div>
               <CloseButton onClick={handleHideContainerPicker}>x</CloseButton>
               <FormHeader>Pick container for:</FormHeader>
               <ID>{currentAnimal}</ID>
-              //TODO: Add description from animal object
               {places?.length > 0 ? (
                 <>
                   <Control
@@ -337,7 +531,7 @@ const Containers: React.FC<Props> = () => {
                       onClick={insertAnimalIntoPlace}
                       isDisabled={!currentAnimal || !currentPlace}
                     />
-                  </Button>{" "}
+                  </Button>
                 </>
               ) : (
                 <ControlHeader>No containers available</ControlHeader>
