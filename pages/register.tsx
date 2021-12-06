@@ -10,7 +10,6 @@ import AppNameHeader from "../components/AppNameHeader";
 import Input from "../components/Input";
 import { AiOutlineLeft } from "react-icons/ai";
 import router from "next/router";
-import { env } from "process";
 
 
 const ButtonsContainer = styled.div`
@@ -68,7 +67,7 @@ const Register: React.FC = () => {
   const register = async (registerData: RegisterData) => {
     setIsLoading(true);
     try {
-      await fetch(`${process.env.API_URL}/api/register`, {
+      await fetch(`/api/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(registerData),
