@@ -9,13 +9,13 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  width: 100%;
 `;
 
 const AnimalContainerCard = styled.div`
-  border: 4px solid #515151;
   margin-top: 24px;
   margin-bottom: 24px;
-  width: 80%;
+  width: 100%;
   min-width: 800px;
   min-height: 400px;
   position: relative;
@@ -36,14 +36,14 @@ const ContainerData = styled.div`
 `;
 
 const Data = styled.div`
-  box-shadow: rgba(50, 50, 93, 0.25) 0 6px 14px -5px,
-    rgba(0, 0, 0, 0.3) 0px 4px 8px -8px;
-  border: 4px solid #515151;
+  box-shadow: rgba(50, 50, 93, 0.45) 0 6px 14px -5px,
+    rgba(0, 0, 0, 0.35) 0px 4px 8px -4px;
   border-right: none;
   display: flex;
   flex-direction: column;
   align-items: end;
   justify-content: space-evenly;
+  margin-right: 16px;
 `;
 
 const Header = styled.h1`
@@ -77,11 +77,10 @@ const BodyText = styled.p`
 
 const AnimalContainerUnits = styled.div`
   width: 60%;
-  box-shadow: rgba(50, 50, 93, 0.25) 0 6px 14px -5px,
-    rgba(0, 0, 0, 0.3) 0px 4px 8px -8px;
+  box-shadow: rgba(50, 50, 93, 0.45) 0 6px 14px -5px,
+    rgba(0, 0, 0, 0.35) 0px 4px 8px -4px;
   height: 400px;
   overflow-y: scroll;
-  border: 4px solid #515151;
   cursor: default;
   padding: 10px;
   display: flex;

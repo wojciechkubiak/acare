@@ -124,36 +124,44 @@ const Button = styled.div`
 `;
 
 const Control = styled(Form.Control)`
-  margin-top: 12px;
+  margin-top: 32px;
   margin-bottom: 12px;
   width: 100%;
-  border: 4px solid #515151;
-  padding: 10px 20px 10px 20px;
-  border-radius: 2px;
-  font-size: 24px;
+  border: 3px solid #7a7a7a;
+  padding: 16px 10px 16px 10px;
+  border-radius: 16px;
+  font-size: 20px;
   color: rgba(0, 0, 0, 0.8);
   font-family: "Roboto", sans-serif;
+  text-align: center;
 
   &:focus {
-    border: 4px solid #515151;
+    border: 3px solid #515151;
     outline: none;
     box-shadow: none;
   }
   &:active {
-    border: 4px solid #515151;
+    border: 3px solid #515151;
     outline: none;
     box-shadow: none;
   }
 `;
 
 const Label = styled(Form.Label)`
-  width: 100%;
-  padding-left: 12px;
-  font-size: 24px;
-  font-weight: 600;
-  margin-bottom: 0;
-  color: rgba(0, 0, 0, 0.8);
-  font-family: "Roboto", sans-serif;
+  margin-top: 8px;
+  padding-left: 4px;
+  margin-left: 4px;
+  padding-bottom: 8px;
+  padding-right: 8px;
+  font-family: Ubuntu, sans-serif;
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.6);
+  font-weight: 500;
+  letter-spacing: 1px;
+  position: absolute;
+  z-index: 100;
+  background-color: white;
+  border-radius: 24px;
 `;
 
 const Option = styled.option`
@@ -161,14 +169,6 @@ const Option = styled.option`
   font-family: "Roboto", sans-serif;
   font-weight: 400;
   padding: 20px 10px 20px 10px;
-`;
-
-const HeaderButton = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  height: 100px;
 `;
 
 const CloseButton = styled.button`

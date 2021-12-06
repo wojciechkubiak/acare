@@ -11,12 +11,14 @@ const Button = styled.div<StyledProps>`
   margin: 20px;
   display: flex;
   padding: 20px;
-  border: 4px solid ${(props) => (props.isOver ? "white" : "#515151")};
   justify-content: space-evenly;
   align-items: center;
   flex-direction: column;
-  box-shadow: rgba(50, 50, 93, 0.25) 0 13px 27px -5px,
-    rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+  box-shadow: ${(props) =>
+    !props.isOver
+      ? "rgba(50, 50, 93, 0.45) 0 13px 27px -5px, rgba(0, 0, 0, 0.35) 0px 8px 16px -8px"
+      : "rgba(50, 50, 93, 0.25) 0 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px"};
+
   cursor: pointer;
   transition: 500ms all;
 `;
