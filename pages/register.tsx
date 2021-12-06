@@ -149,7 +149,7 @@ const Register: React.FC = () => {
         <ErrorText text={error} />
         <ButtonsContainer>
           {!isLoading ? (
-            <SubmitButton text="REGISTER" isDisabled={isLoading} />
+            <SubmitButton isDisabled={isLoading} />
           ) : (
             <Loader type="TailSpin" color="#D4AFB9" height={70} width={70} />
           )}
