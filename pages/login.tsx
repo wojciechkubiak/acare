@@ -54,7 +54,7 @@ const Login: React.FC = () => {
   const login = async (loginData: LoginData) => {
     setIsLoading(true);
     try {
-      await fetch("http://localhost:3000/api/login", {
+      await fetch(`${process.env.API_URL}/api/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(loginData),

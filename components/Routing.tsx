@@ -40,7 +40,7 @@ const Routing = ({ router, children }: IRouting) => {
     if (Routes.includes(router.route)) {
       if (refresh?.length) {
         try {
-          await fetch("http://localhost:3000/api/auth", {
+          await fetch(`${process.env.API_URL}/api/auth`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ refresh: refresh }),
