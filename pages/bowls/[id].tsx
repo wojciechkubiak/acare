@@ -22,32 +22,16 @@ type Props = {
 
 const Bowls: React.FC<Props> = (props) => {
   return (
-    <Layout>
-      <div className="page">
-        <h1>Bowls</h1>
-        <main>
-          {props.bowls?.map((bowl) => (
-            <div key={bowl.id} className="bowl">
-              <Bowl bowl={bowl} />
-            </div>
-          ))}
-        </main>
-      </div>
-      <style jsx>{`
-        .bowl {
-          background: white;
-          transition: box-shadow 0.1s ease-in;
-        }
-
-        .bowl:hover {
-          box-shadow: 1px 1px 3px #aaa;
-        }
-
-        .bowl + .bowl {
-          margin-top: 2rem;
-        }
-      `}</style>
-    </Layout>
+    <div className="page">
+      <h1>Bowls</h1>
+      <main>
+        {props.bowls?.map((bowl) => (
+          <div key={bowl.id} className="bowl">
+            <Bowl bowl={bowl} />
+          </div>
+        ))}
+      </main>
+    </div>
   );
 };
 
