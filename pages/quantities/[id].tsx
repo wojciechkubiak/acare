@@ -1,8 +1,8 @@
 import React from "react";
 import { GetServerSideProps } from "next";
 import safeJsonStringify from "safe-json-stringify";
-import Layout from "../../components/Layout";
-import Quantity, { QuantityProps } from "../../components/Quantity";
+import Layout from "../../components/Layout/Layout";
+import Quantity, { QuantityProps } from "../../components/Quantity/Quantity";
 import prisma from "../../lib/prisma";
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {

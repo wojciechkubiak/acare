@@ -1,25 +1,11 @@
-import { useContext } from "react";
-import router from "next/router";
 import React from "react";
 import Lottie from "react-lottie";
-import styled from "styled-components";
 import animationData from "../assets/cow.json";
-import AppNameHeader from "../components/AppNameHeader";
-import AuthContext from "../context/AuthContext";
-import ButtonOutlined from "../components/ButtonOutlined";
+import OptionPicker from "../components/OptionPicker/OptionPicker";
 
-const Container = styled.div`
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-`;
+import { Container } from "../styles/404Styled";
 
 const Error = () => {
-  const authCtx = useContext(AuthContext);
-
   const defaultOptions = {
     loop: true,
     autoplay: true,
@@ -39,7 +25,7 @@ const Error = () => {
         isStopped={false}
         isPaused={false}
       />
-      <AppNameHeader text="Page not found" />
+      <OptionPicker text="Page not found" />
     </Container>
   );
 };

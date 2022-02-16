@@ -19,13 +19,14 @@ export interface AuthResponse {
 }
 
 const authUser = async (req: any, res: any) => {
-  const { refresh } = req.body;
+  const { refreshToken } = req.body;
+
   const token: Token = {
     authToken: "",
   };
 
   return new Promise((resolve) => {
-    const authToken = jsonwebtoken.decode(refresh);
+    const authToken = jsonwebtoken.decode(refreshToken);
     resolve(authToken);
   })
     .then((data: AuthResponse) => {

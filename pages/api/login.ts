@@ -2,11 +2,6 @@ import bcrypt from "bcrypt";
 import jsonwebtoken from "jsonwebtoken";
 import prisma from "../../lib/prisma";
 
-export interface LoginData {
-  email: string;
-  password: string;
-}
-
 export interface Tokens {
   isLoggedIn: boolean;
   isUser: boolean;

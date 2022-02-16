@@ -21,5 +21,10 @@ export const BaseRoutes = {
   ...SectionRoutes,
 };
 
-export const Routes = [AuthRoutes.login, AuthRoutes.register, BaseRoutes.base];
 export const Sections = Object.values(SectionRoutes);
+export const Routes = [
+  AuthRoutes.login,
+  AuthRoutes.register,
+  BaseRoutes.base,
+  Sections,
+];

@@ -1,7 +1,7 @@
 import React from "react";
 import { GetServerSideProps } from "next";
-import Layout from "../../components/Layout";
-import Bowl, { BowlProps } from "../../components/Bowl";
+import Layout from "../../components/Layout/Layout";
+import Bowl, { IBowlProps } from "../../components/Bowl/Bowl";
 // import { useSession, getSession } from "next-auth/client";
 import prisma from "../../lib/prisma";
 
@@ -17,7 +17,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 };
 
 type Props = {
-  bowls: BowlProps[];
+  bowls: IBowlProps[];
 };
 
 const Bowls: React.FC<Props> = (props) => {

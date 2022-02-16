@@ -2,13 +2,6 @@ import { v4 as uuidv4 } from "uuid";
 import bcrypt from "bcrypt";
 import prisma from "../../lib/prisma";
 
-export interface RegisterData {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-}
-
 export interface RegisterSuccess {
   isCreated: boolean;
 }

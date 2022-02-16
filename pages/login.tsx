@@ -1,15 +1,29 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Router from "next/router";
-import { LoginData, Tokens } from "./api/login";
-import FormContainer from "../components/FormContainer";
-import AppNameHeader from "../components/AppNameHeader";
-import Input from "../components/Input";
+import FormContainer from "../components/FormContainer/FormContainer";
+import OptionPicker from "../components/OptionPicker/OptionPicker";
+import Input from "../components/Input/Input";
 import styled from "styled-components";
-import SubmitButton from "../components/SubmitButton";
-import TextButton from "../components/TextButton";
-import ErrorText from "../components/ErrorText";
+import SubmitButton from "../components/SubmitButton/SubmitButton";
+import ErrorText from "../components/ErrorText/ErrorText";
 import Loader from "react-loader-spinner";
-import AuthContext from "../context/AuthContext";
+
+import { useAppDispatch, useAppSelector } from "../store";
+import { AuthLoginData } from "../models/Auth";
+import { loginUser } from "../store/auth/auth-actions";
+
+const BaseContainer = styled.div`
+  position: relative;
+  width: 35%;
+  min-width: 600px;
+  height: 100vh;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  left: 50%;
+  transform: translateX(-50%);
+`;
 
 const ButtonsContainer = styled.div`
   display: flex;
@@ -18,7 +32,7 @@ const ButtonsContainer = styled.div`
   position: relative;
   left: 50%;
   transform: translateX(-50%);
-  min-height: 200px;
+  min-height: 80px;
   justify-content: space-around;
   align-items: center;
 
@@ -31,117 +45,97 @@ const ButtonsContainer = styled.div`
 const Form = styled.form`
   margin-top: 60px;
   margin-bottom: 32px;
+  z-index: 1000;
+`;
+
+const FormHeader = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  border-radius: 24px;
+  width: 80%;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 52px;
 `;
 
 const Login: React.FC = () => {
-  const authCtx = useContext(AuthContext);
+  const dispatch = useAppDispatch();
 
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [loginData, setLoginData] = useState<LoginData>({
+  const isLoading: boolean = useAppSelector((state) => state.auth.isLoading);
+
+  const [loginData, setLoginData] = useState<AuthLoginData>({
     email: "",
     password: "",
   });
+
+  const isAuth: boolean = useAppSelector((state) => state.auth.isAuth);
+
   const [error, setError] = useState<string>("");
 
   const handleInput = (value: string, name: string) => {
     if (error?.length) setError("");
-    setLoginData((prevState: LoginData) => ({
+    setLoginData((prevState: AuthLoginData) => ({
       ...prevState,
       [name]: value,
     }));
   };
 
-  const login = async (loginData: LoginData) => {
-    setIsLoading(true);
-    try {
-      await fetch(`/api/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(loginData),
-      })
-        .then((result) => {
-          if (result.status === 200) {
-            result
-              .json()
-              .then((data: Tokens) => {
-                if (data) {
-                  if (data?.authToken && data?.refreshToken) {
-                    const authToken = data.authToken;
-                    const refreshToken = data.refreshToken;
-
-                    sessionStorage.setItem("authToken", authToken);
-                    document.cookie = `refreshToken=${refreshToken}`;
-                    authCtx.setTokens(authToken, refreshToken, true, false);
-                    Router.push("/");
-                  }
-                }
-              })
-              .catch((error) => {
-                setIsLoading(false);
-                setError("Something went wrong");
-              });
-
-            setIsLoading(false);
-          } else {
-            setError("Wrong credentials");
-            setIsLoading(false);
-          }
-        })
-        .catch((error) => {
-          setError("Something went wrong");
-          setIsLoading(false);
-        });
-    } catch (error) {
-      setError("Something went wrong");
-      setIsLoading(false);
-    }
+  const login = (loginData: AuthLoginData) => {
+    dispatch(loginUser(loginData));
   };
 
   return (
-    <FormContainer>
-      <AppNameHeader text="Log In" margin={180} />
-      <Form
-        onSubmit={(event) => {
-          event.preventDefault();
-          login(loginData);
-        }}
-      >
-        <Input
-          label="Email"
-          placeholder="your email"
-          type="email"
-          name="email"
-          value={loginData.email}
-          onChange={handleInput}
-          isRequired={true}
-          disabled={isLoading}
-        />
-        <Input
-          label="Password"
-          placeholder="your password"
-          type="password"
-          name="password"
-          value={loginData.password}
-          onChange={handleInput}
-          isRequired={true}
-          disabled={isLoading}
-        />
-        <ErrorText text={error} />
-        <ButtonsContainer>
-          {!isLoading ? (
-            <>
+    <BaseContainer>
+      <FormContainer>
+        <FormHeader>
+          <OptionPicker text="Log In" isActive={true} isLeft={true} />
+          <OptionPicker
+            text="New account"
+            isActive={false}
+            isLeft={false}
+            onClick={() => Router.push("/register")}
+          />
+        </FormHeader>
+        <Form
+          onSubmit={(event) => {
+            event.preventDefault();
+            login(loginData);
+          }}
+        >
+          <Input
+            label="Email"
+            placeholder="your email"
+            type="email"
+            name="email"
+            value={loginData.email}
+            onChange={handleInput}
+            isRequired={true}
+            disabled={isLoading}
+          />
+          <Input
+            label="Password"
+            placeholder="your password"
+            type="password"
+            name="password"
+            value={loginData.password}
+            onChange={handleInput}
+            isRequired={true}
+            disabled={isLoading}
+          />
+          <ErrorText text={error} />
+          <ButtonsContainer>
+            {!isLoading ? (
               <SubmitButton isDisabled={isLoading} />
-              <TextButton
-                text="Create new account"
-                onClick={() => Router.push("/register")}
-              />
-            </>
-          ) : (
-            <Loader type="TailSpin" color="#D4AFB9" height={70} width={70} />
-          )}
-        </ButtonsContainer>
-      </Form>
-    </FormContainer>
+            ) : (
+              <Loader type="TailSpin" color="#D4AFB9" height={70} width={70} />
+            )}
+          </ButtonsContainer>
+        </Form>
+      </FormContainer>
+    </BaseContainer>
   );
 };
 

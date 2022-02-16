@@ -1,16 +1,31 @@
-import React, { useState } from "react";
-import FormContainer from "../components/FormContainer";
+import React, { useEffect, useState } from "react";
+import FormContainer from "../components/FormContainer/FormContainer";
 import Router from "next/router";
-import ErrorText from "../components/ErrorText";
-import { RegisterData, RegisterSuccess } from "./api/register";
+import ErrorText from "../components/ErrorText/ErrorText";
+import { RegisterSuccess } from "./api/register";
 import styled from "styled-components";
-import SubmitButton from "../components/SubmitButton";
+import SubmitButton from "../components/SubmitButton/SubmitButton";
 import Loader from "react-loader-spinner";
-import AppNameHeader from "../components/AppNameHeader";
-import Input from "../components/Input";
+import OptionPicker from "../components/OptionPicker/OptionPicker";
+import Input from "../components/Input/Input";
 import { AiOutlineLeft } from "react-icons/ai";
 import router from "next/router";
+import { AuthRegisterData } from "../models/Auth";
+import { useAppDispatch, useAppSelector } from "../store";
+import { registerUser } from "../store/auth/auth-actions";
+import { clearRegister } from "../store/auth/auth-slice";
 
+const BaseContainer = styled.div`
+  position: relative;
+  width: 35%;
+  min-width: 600px;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  left: 50%;
+  transform: translateX(-50%);
+`;
 
 const ButtonsContainer = styled.div`
   display: flex;
@@ -46,9 +61,25 @@ const Form = styled.form`
   margin-bottom: 32px;
 `;
 
+const FormHeader = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  border-radius: 24px;
+  width: 80%;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 52px;
+`;
+
 const Register: React.FC = () => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [registerData, setRegisterData] = useState<RegisterData>({
+  const dispatch = useAppDispatch();
+
+  const { isRegister, isLoading } = useAppSelector((state) => state.auth);
+
+  const [registerData, setRegisterData] = useState<AuthRegisterData>({
     firstName: "",
     lastName: "",
     password: "",
@@ -56,107 +87,97 @@ const Register: React.FC = () => {
   });
   const [error, setError] = useState<string>("");
 
+  useEffect(() => {
+    if (isRegister) {
+      dispatch(clearRegister());
+      router.push("/login");
+    }
+  }, [isRegister]);
+
   const handleInput = (value: string, name: string) => {
     if (error?.length) setError("");
-    setRegisterData((prevState: RegisterData) => ({
+    setRegisterData((prevState: AuthRegisterData) => ({
       ...prevState,
       [name]: value,
     }));
   };
 
-  const register = async (registerData: RegisterData) => {
-    setIsLoading(true);
-    try {
-      await fetch(`/api/register`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(registerData),
-      }).then((result) => {
-        if (result.status === 200) {
-          result.json().then((data: RegisterSuccess) => {
-            if (data) {
-              if (data.isCreated) {
-                Router.push("/login");
-              } else {
-                setIsLoading(false);
-                return false;
-              }
-            }
-            setIsLoading(false);
-            return false;
-          });
-        } else {
-          setIsLoading(false);
-          setError("Email address already used");
-        }
-      });
-    } catch (error) {
-      setIsLoading(false);
-    }
+  const register = async (registerData: AuthRegisterData) => {
+    dispatch(registerUser(registerData));
   };
 
   return (
-    <FormContainer>
-      <AppNameHeader text="Create account" margin={180} />
-      <ButtonBack onClick={() => router.push("/login")}>
-        <AiOutlineLeft size={32} color="gray" />
-      </ButtonBack>
-      <Form
-        onSubmit={(event) => {
-          event.preventDefault();
-          register(registerData);
-        }}
-      >
-        <Input
-          label="Firstname"
-          placeholder="your firstname"
-          type="text"
-          name="firstName"
-          value={registerData.firstName}
-          onChange={handleInput}
-          isRequired={true}
-          disabled={isLoading}
-        />
-        <Input
-          label="Lastname"
-          placeholder="your lastname"
-          type="text"
-          name="lastName"
-          value={registerData.lastName}
-          onChange={handleInput}
-          isRequired={true}
-          disabled={isLoading}
-        />
-        <Input
-          label="Email"
-          placeholder="your email"
-          type="email"
-          name="email"
-          value={registerData.email}
-          onChange={handleInput}
-          isRequired={true}
-          disabled={isLoading}
-        />
-        <Input
-          label="Password"
-          placeholder="your password"
-          type="password"
-          name="password"
-          value={registerData.password}
-          onChange={handleInput}
-          isRequired={true}
-          disabled={isLoading}
-        />
-        <ErrorText text={error} />
-        <ButtonsContainer>
-          {!isLoading ? (
-            <SubmitButton isDisabled={isLoading} />
-          ) : (
-            <Loader type="TailSpin" color="#D4AFB9" height={70} width={70} />
-          )}
-        </ButtonsContainer>
-      </Form>
-    </FormContainer>
+    <BaseContainer>
+      <FormContainer>
+        <FormHeader>
+          <OptionPicker
+            text="Log In"
+            isActive={false}
+            isLeft={true}
+            onClick={() => Router.push("/login")}
+          />
+          <OptionPicker text="Create" isActive={true} isLeft={false} />
+        </FormHeader>
+        {/*<ButtonBack onClick={() => router.push("/login")}>*/}
+        {/*  <AiOutlineLeft size={32} color="gray" />*/}
+        {/*</ButtonBack>*/}
+        <Form
+          onSubmit={(event) => {
+            event.preventDefault();
+            register(registerData);
+          }}
+        >
+          <Input
+            label="Firstname"
+            placeholder="your firstname"
+            type="text"
+            name="firstName"
+            value={registerData.firstName}
+            onChange={handleInput}
+            isRequired={true}
+            disabled={isLoading}
+          />
+          <Input
+            label="Lastname"
+            placeholder="your lastname"
+            type="text"
+            name="lastName"
+            value={registerData.lastName}
+            onChange={handleInput}
+            isRequired={true}
+            disabled={isLoading}
+          />
+          <Input
+            label="Email"
+            placeholder="your email"
+            type="email"
+            name="email"
+            value={registerData.email}
+            onChange={handleInput}
+            isRequired={true}
+            disabled={isLoading}
+          />
+          <Input
+            label="Password"
+            placeholder="your password"
+            type="password"
+            name="password"
+            value={registerData.password}
+            onChange={handleInput}
+            isRequired={true}
+            disabled={isLoading}
+          />
+          <ErrorText text={error} />
+          <ButtonsContainer>
+            {!isLoading ? (
+              <SubmitButton isDisabled={isLoading} />
+            ) : (
+              <Loader type="TailSpin" color="#D4AFB9" height={70} width={70} />
+            )}
+          </ButtonsContainer>
+        </Form>
+      </FormContainer>
+    </BaseContainer>
   );
 };
 
